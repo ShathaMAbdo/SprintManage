@@ -18,9 +18,9 @@ import java.util.Set;
 public class Task {
     @Id
     private String id;
-    private Integer priority;
     private String name;
-    private Integer StoryPoints;
+    private Integer priority;
+    private Integer storyPoints;
     Set<SubTask> subTasks;
 
     @Override

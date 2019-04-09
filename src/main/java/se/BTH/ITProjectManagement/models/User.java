@@ -20,8 +20,7 @@ import java.util.Set;
 public class User  {
     @Id
     private String id;
-    private String firstName;
-    private String lastName;
+    private String name;
     @NotBlank
     @Email
     private String email;

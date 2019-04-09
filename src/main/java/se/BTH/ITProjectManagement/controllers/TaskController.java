@@ -1,66 +1,64 @@
 package se.BTH.ITProjectManagement.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import se.BTH.ITProjectManagement.models.Task;
 import se.BTH.ITProjectManagement.repositories.TaskRepository;
 
+import java.util.*;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.Optional;
-
-@RestController
-@RequestMapping("/api")
+@Controller
+@RequestMapping("/api/task")
 public class TaskController {
-    private final Logger log = LoggerFactory.getLogger(TaskController.class);
+
+    private static org.apache.log4j.Logger log = Logger.getLogger(TaskController.class);
 
     @Autowired
     private TaskRepository repository;
 
-    public TaskController(TaskRepository repository) {
-        this.repository = repository;
+    // Displaying the initial tasks list.
+    @RequestMapping(value = "/tasks", method = RequestMethod.GET)
+    public String getTasks(Model model) {
+        log.debug("Request to fetch all tasks from the mongo database");
+        List<Task> task_list = repository.findAll();
+        model.addAttribute("tasks", task_list);
+        return "task";
     }
 
-    @GetMapping("/tasks")
-    Collection<Task> tasks() {
-        return repository.findAll();
+    // Opening the add new task form page.
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addTask(Model model) {
+        log.debug("Request to open the new task form page");
+        Task task=Task.builder().storyPoints(0).build();
+        repository.save(task);
+        model.addAttribute("taskAttr", task);
+        return "taskform";
     }
 
-    @GetMapping("/task/{id}")
-    ResponseEntity<?> getTask(@PathVariable String id) {
-        Optional<Task> task = repository.findById(id);
-        return task.map(response -> ResponseEntity.ok().body(response))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    // Opening the edit task form page.
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String editTask(@RequestParam(value="id", required=true) String id, Model model) {
+        log.debug("Request to open the edit task form page");
+        model.addAttribute("taskAttr", repository.findById(id));
+        return "taskform";
     }
 
-    @PostMapping(value = "/task", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Task> createTask(@Valid @RequestBody Task task) throws URISyntaxException {
-        log.info("Request to create task: {}", task);
-        Task result = repository.save(task);
-        return ResponseEntity.created(new URI("/api/task/" + result.getId())).body(result);
-    }
-
-    @PutMapping("/task")
-    ResponseEntity<Task> updateTask(@Valid @RequestBody Task task) {
-        log.info("Request to update task: {}", task);
-        Task result = repository.save(task);
-        return ResponseEntity.ok().body(result);
-    }
-
-    @DeleteMapping("/task/{id}")
-    public ResponseEntity<?> deleteTask(@PathVariable String id) {
-        log.info("Request to delete task: {}", id);
+    // Deleting the specified task.
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public String delete(@RequestParam(value="id", required=true) String id, Model model) {
         repository.deleteById(id);
-        return ResponseEntity.ok().build();
+        return "redirect:tasks";
     }
 
-
+    // Adding a new task or updating an existing task.
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public String save(@ModelAttribute("taskAttr") Task task) {                  // needs test for edit or create
+        repository.save(task);
+        return "redirect:tasks";
+    }
 }

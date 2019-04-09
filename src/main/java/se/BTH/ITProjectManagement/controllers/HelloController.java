@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class HelloController {
-    @GetMapping(value={"/api/", "/api/hello"})
+    @GetMapping(value={"/","/api/", "/api/hello"})
     public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="Administrator") String name) {
         model.addAttribute("name", name);
         return "hello";

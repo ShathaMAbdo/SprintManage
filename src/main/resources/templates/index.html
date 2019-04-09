@@ -1,23 +1,25 @@
-<html lang="en">
-<head>
-    <title>Index Page</title>
-</head>
-<body>
-<form action="save" method="post">
-    <table>
-        <tr>
-            <td><label for="name">User Name</label></td>
-            <td><input type="text" name="name"></input></td>
-        </tr>
-        <tr>
-            <td><label for="email">Email</label></td>
-            <td><input type="text" name="email"></input></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Submit"></input></td>
-        </tr>
-    </table>
-</form>
-</body>
-</html>
+<div th:switch="${users}">
+    <h2 th:case="null">No users yet!</h2>
+    <div th:case="*">
+        <h2>Users</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
+                <td><a th:href="@{/edit/{id}(id=${user.id})}">Edit</a></td>
+                <td><a th:href="@{/delete/{id}(id=${user.id})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p><a href="/signup">Add a new user</a></p>
+</div>>

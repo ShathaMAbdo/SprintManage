@@ -20,6 +20,7 @@ public class Team {
     @Id
     private String id;
     private String name;
+
     List<User> users;
 
     @Override

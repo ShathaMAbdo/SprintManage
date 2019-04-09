@@ -19,10 +19,10 @@ public class SubTask {
     @Id
     private String id;
     private String name;
-    private List<User> users;
     private TaskStatus status;
     private Integer OEstimate; //planned hours
     private List<Integer> actualHours;
+    private List<User> users;
 
     @Override
     public String toString() {

@@ -1,4 +1,5 @@
 package se.BTH.ITProjectManagement.handling;
+import static org.apache.log4j.BasicConfigurator.configure;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,10 @@ public class Initializer implements CommandLineRunner {
         this.subTaskRepo = subTaskRepo;
         this.sprintRepo = sprintRepo;
         this.backlogTaskRepo = backlogTaskRepo;
+    }
+
+    void configure() {
+
     }
 
     @Override
@@ -88,7 +93,7 @@ public class Initializer implements CommandLineRunner {
                 .OEstimate(2).actualHours(actualHours).build();
         subTasks.add(subtask);
         subTaskRepo.saveAll(subTasks);
-        Task task = Task.builder().name("Implement of new OTC notification").priority(1).StoryPoints(50).subTasks(subTasks)
+        Task task = Task.builder().name("Implement of new OTC notification").priority(1).storyPoints(50).subTasks(subTasks)
                 .build();
         tasks.add(task);
         // add  task 2
@@ -160,7 +165,7 @@ public class Initializer implements CommandLineRunner {
                 .OEstimate(10).actualHours(actualHours).build();
         subTasks.add(subtask);
         subTaskRepo.saveAll(subTasks);
-        task = Task.builder().name("Verification").priority(2).StoryPoints(178).subTasks(subTasks)
+        task = Task.builder().name("Verification").priority(2).storyPoints(178).subTasks(subTasks)
                 .build();
         tasks.add(task);
 //add task 3
@@ -202,7 +207,7 @@ public class Initializer implements CommandLineRunner {
         subTasks.add(subtask);
         subTaskRepo.saveAll(subTasks);
 
-        task = Task.builder().name("Documentation").priority(2).StoryPoints(48).subTasks(subTasks)
+        task = Task.builder().name("Documentation").priority(2).storyPoints(48).subTasks(subTasks)
                 .build();
         tasks.add(task);
         //add task 4
@@ -220,7 +225,7 @@ public class Initializer implements CommandLineRunner {
         subTasks.add(subtask);
         subTaskRepo.saveAll(subTasks);
 
-        task = Task.builder().name("Introduction new feature Control").priority(4).StoryPoints(8).subTasks(subTasks)
+        task = Task.builder().name("Introduction new feature Control").priority(4).storyPoints(8).subTasks(subTasks)
                 .build();
         tasks.add(task);
 //add task 5
@@ -247,7 +252,7 @@ public class Initializer implements CommandLineRunner {
                 .OEstimate(80).actualHours(actualHours).build();
         subTasks.add(subtask);
         subTaskRepo.saveAll(subTasks);
-        task = Task.builder().name("Analysis").priority(5).StoryPoints(80).subTasks(subTasks)
+        task = Task.builder().name("Analysis").priority(5).storyPoints(80).subTasks(subTasks)
                 .build();
         tasks.add(task);
         taskRepo.saveAll(tasks);
@@ -269,22 +274,22 @@ public class Initializer implements CommandLineRunner {
         role = Role.builder().name(RoleName.ROLE_ADMIN).build();
         rolerepo.save(role);
         List<User> users = new ArrayList<>();
-        User u = User.builder().firstName("Arti").lastName("Juhanson").email("arti@bth.se").phone("0760762135").city("Karlskrona")
+        User u = User.builder().name("Arti").email("arti@bth.se").phone("0760762135").city("Karlskrona")
                 .userName("Arti").password("1111").passwordConfirm("1111").roles(roles).build();
         users.add(u);
-        u = User.builder().firstName("Hossein").lastName("Svensson").email("hossein@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Hossein").email("hossein@bth.se").phone("0770772135").city("Karlshamen")
                 .userName("Hossein").password("2222").passwordConfirm("2222").roles(roles).build();
         users.add(u);
-        u = User.builder().firstName("Kevin").lastName("Svensson").email("fridrek@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Kevin").email("fridrek@bth.se").phone("0770772135").city("Karlshamen")
                 .userName("Kevin").password("3333").passwordConfirm("3333").roles(roles).build();
         users.add(u);
-        u = User.builder().firstName("Emil").lastName("Svensson").email("emil@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Emil").email("emil@bth.se").phone("0770772135").city("Karlshamen")
                 .userName("Emil").password("4444").passwordConfirm("4444").roles(roles).build();
         users.add(u);
-        u = User.builder().firstName("Forhan").lastName("Svensson").email("forhan@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Forhan").email("forhan@bth.se").phone("0770772135").city("Karlshamen")
                 .userName("Forhan").password("5555").passwordConfirm("5555").roles(roles).build();
         users.add(u);
-        u = User.builder().firstName("Simon").lastName("Svensson").email("simon@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Simon").email("simon@bth.se").phone("0770772135").city("Karlshamen")
                 .userName("Simon").password("6666").passwordConfirm("6666").roles(roles).build();
         users.add(u);
         userrepo.saveAll(users);
@@ -292,13 +297,13 @@ public class Initializer implements CommandLineRunner {
         Team team = Team.builder().name("Team1").users(users).build();
         teamrepo.save(team);
         users = new ArrayList<>();
-        u = User.builder().firstName("Shatha").lastName("Juhanson").email("shatha@bth.se").phone("0760762135").city("Karlskrona")
+        u = User.builder().name("Shatha").email("shatha@bth.se").phone("0760762135").city("Karlskrona")
                 .userName("Shatha").password("7777").passwordConfirm("7777").roles(roles).build();
         users.add(u);
-        u = User.builder().firstName("Hala").lastName("Svensson").email("hala@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Hala").email("hala@bth.se").phone("0770772135").city("Karlshamen")
                 .userName("Hala").password("8888").passwordConfirm("8888").roles(roles).build();
         users.add(u);
-        u = User.builder().firstName("Robal").lastName("Svensson").email("robal@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Robal").email("robal@bth.se").phone("0770772135").city("Karlshamen")
                 .userName("Robal").password("9999").passwordConfirm("9999").roles(roles).build();
         users.add(u);
 
@@ -308,13 +313,13 @@ public class Initializer implements CommandLineRunner {
 
         roles.add(role);
         users = new ArrayList<>();
-        u = User.builder().firstName("Admin").lastName("Admin").email("Admin@bth.se").phone("0760744135").city("Karlskrona")
+        u = User.builder().name("Admin").email("Admin@bth.se").phone("0760744135").city("Karlskrona")
                 .userName("admin").password("admin").passwordConfirm("admin").roles(roles).build();
         users.add(u);
         userrepo.saveAll(users);
         team = Team.builder().name("Team Administrators").users(users).build();
         teamrepo.save(team);
-
+teamrepo.findByName("Team1").get().getUsers().forEach(System.out::println);
         //  teamrepo.findAll().forEach(System.out::println);
     }
 
