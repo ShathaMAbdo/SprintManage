@@ -7,7 +7,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class Team {
     private String id;
     private String name;
 
-    List<User> users;
+    Set<User> users;
 
     @Override
     public String toString() {

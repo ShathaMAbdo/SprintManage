@@ -14,7 +14,7 @@
 
 		<h2>Hello Administrator! </h2>
 
-        <a href="/api/team/teams" target="_blank">Teams</a>
+        <a href="/api/team/teams" target="_blank"><h4>- Teams</h4></a>
             <div>&nbsp;</div>
 	</div>
 	</body>

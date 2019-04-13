@@ -1,4 +1,5 @@
 package se.BTH.ITProjectManagement.handling;
+
 import static org.apache.log4j.BasicConfigurator.configure;
 
 import org.springframework.boot.CommandLineRunner;
@@ -42,15 +43,15 @@ public class Initializer implements CommandLineRunner {
 
     @Override
     public void run(String... strings) {
-        teamrepo.deleteAll();
-        rolerepo.deleteAll();
-        userrepo.deleteAll();
-        taskRepo.deleteAll();
-        subTaskRepo.deleteAll();
-        sprintRepo.deleteAll();
-        backlogTaskRepo.deleteAll();
-        addPersons();
-        addBacklog();
+//        teamrepo.deleteAll();
+//        rolerepo.deleteAll();
+//        userrepo.deleteAll();
+//        taskRepo.deleteAll();
+//        subTaskRepo.deleteAll();
+//        sprintRepo.deleteAll();
+//        backlogTaskRepo.deleteAll();
+//        addPersons();
+//        addBacklog();
     }
 
     private void addBacklog() {
@@ -273,7 +274,7 @@ public class Initializer implements CommandLineRunner {
         roles.add(role);
         role = Role.builder().name(RoleName.ROLE_ADMIN).build();
         rolerepo.save(role);
-        List<User> users = new ArrayList<>();
+        Set<User> users = new HashSet<>();
         User u = User.builder().name("Arti").email("arti@bth.se").phone("0760762135").city("Karlskrona")
                 .userName("Arti").password("1111").passwordConfirm("1111").roles(roles).build();
         users.add(u);
@@ -296,7 +297,7 @@ public class Initializer implements CommandLineRunner {
 
         Team team = Team.builder().name("Team1").users(users).build();
         teamrepo.save(team);
-        users = new ArrayList<>();
+        users = new HashSet<>();
         u = User.builder().name("Shatha").email("shatha@bth.se").phone("0760762135").city("Karlskrona")
                 .userName("Shatha").password("7777").passwordConfirm("7777").roles(roles).build();
         users.add(u);
@@ -312,14 +313,14 @@ public class Initializer implements CommandLineRunner {
         teamrepo.save(team);
 
         roles.add(role);
-        users = new ArrayList<>();
+        users = new HashSet<>();
         u = User.builder().name("Admin").email("Admin@bth.se").phone("0760744135").city("Karlskrona")
                 .userName("admin").password("admin").passwordConfirm("admin").roles(roles).build();
         users.add(u);
         userrepo.saveAll(users);
         team = Team.builder().name("Team Administrators").users(users).build();
         teamrepo.save(team);
-teamrepo.findByName("Team1").get().getUsers().forEach(System.out::println);
+        teamrepo.findByName("Team1").get().getUsers().forEach(System.out::println);
         //  teamrepo.findAll().forEach(System.out::println);
     }
 

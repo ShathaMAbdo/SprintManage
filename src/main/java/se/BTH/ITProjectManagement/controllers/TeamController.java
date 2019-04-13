@@ -5,18 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import se.BTH.ITProjectManagement.models.Task;
 import se.BTH.ITProjectManagement.models.Team;
 
 
+import se.BTH.ITProjectManagement.models.User;
 import se.BTH.ITProjectManagement.repositories.TeamRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
 
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
+import java.util.Set;
 
 @Controller
 @RequestMapping("/api/team")
@@ -37,14 +34,30 @@ public class TeamController {
         model.addAttribute("teams", team_list);
         return "team";
     }
-    // Deleting the specified team.
+    // view team's members
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
     public String getTeamMembers(@RequestParam(value="id", required=true) String id, Model model) {
         log.debug("Request to fetch all users from the mongo database for custom team");
+        Set<User> member_list = repository.findById(id).get().getUsers();
 
-        model.addAttribute("teamAttr", repository.findById(id));
+        model.addAttribute("members",member_list );
 
-        return "user";
+        return "teammember";
+    }
+    @RequestMapping(value = "/detail/list", method = RequestMethod.GET)
+    public String selectMemberToAdd(Model model) {
+        log.debug("Request to fetch all users from the db for custom team and select member");
+        model.addAttribute("members",userRepository.findAll());
+        return "teammemberform";
+    }
+    @RequestMapping(value = "/detail/select", method = RequestMethod.POST)
+    public String save(@ModelAttribute("userAttr") User user,String id) {
+        Team team=repository.findById(id).get();
+        Set<User> members=team.getUsers();
+        members.add(user);
+        team.setUsers(members);
+        repository.save(team);
+        return "redirect:teammember";
     }
     // Opening the add new team form page.
     @RequestMapping(value = "/add", method = RequestMethod.GET)
