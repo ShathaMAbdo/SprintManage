@@ -64,7 +64,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 0);
         actualHours.add(2, 4);
         actualHours.add(3, 1);
-        User user = userrepo.findByUserName("Arti").get();
+        User user = userrepo.findByUsername("Arti");
         users.add(user);
         SubTask subtask = SubTask.builder().name("Schema Registration").status(TaskStatus.DONE).users(users)
                 .OEstimate(8).actualHours(actualHours).build();
@@ -75,9 +75,9 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 4);
         actualHours.add(2, 6);
         actualHours.add(3, 6);
-        user = userrepo.findByUserName("Hossein").get();
+        user = userrepo.findByUsername("Hossein");
         users.add(user);
-        user = userrepo.findByUserName("Kevin").get();
+        user = userrepo.findByUsername("Kevin");
         users.add(user);
         subtask = SubTask.builder().name("implement notification contxt and data").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(40).actualHours(actualHours).build();
@@ -88,7 +88,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.set(1, 4);
         actualHours.set(2, 6);
         actualHours.set(1, 6);
-        user = userrepo.findByUserName("Hossein").get();
+        user = userrepo.findByUsername("Hossein");
         users.add(user);
         subtask = SubTask.builder().name("New notification category").status(TaskStatus.REVIEW).users(users)
                 .OEstimate(2).actualHours(actualHours).build();
@@ -105,7 +105,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 1);
         actualHours.add(2, 0);
         actualHours.add(3, 2);
-        user = userrepo.findByUserName("Emil").get();
+        user = userrepo.findByUsername("Emil");
         users.add(user);
         subtask = SubTask.builder().name("Test Analysis").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(24).actualHours(actualHours).build();
@@ -116,7 +116,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 7);
         actualHours.add(2, 8);
         actualHours.add(3, 1);
-        user = userrepo.findByUserName("Emil").get();
+        user = userrepo.findByUsername("Emil");
         users.add(user);
 
         subtask = SubTask.builder().name("test data( RMCA & CPM)").status(TaskStatus.ONGOING).users(users)
@@ -127,7 +127,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.set(1, 0);
         actualHours.set(2, 0);
         actualHours.set(3, 2);
-        user = userrepo.findByUserName("Emil").get();
+        user = userrepo.findByUsername("Emil");
         users.add(user);
 
         subtask = SubTask.builder().name("integration Test").status(TaskStatus.ONGOING).users(users)
@@ -138,7 +138,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.set(1, 0);
         actualHours.set(2, 0);
         actualHours.set(3, 0);
-        user = userrepo.findByUserName("Forhan").get();
+        user = userrepo.findByUsername("Forhan");
         users.add(user);
         subtask = SubTask.builder().name("Jive Test").status(TaskStatus.PLANNED).users(users)
                 .OEstimate(64).actualHours(actualHours).build();
@@ -148,7 +148,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.set(1, 0);
         actualHours.set(2, 0);
         actualHours.set(3, 1);
-        user = userrepo.findByUserName("Forhan").get();
+        user = userrepo.findByUsername("Forhan");
         users.add(user);
         subtask = SubTask.builder().name("Jive Protocol").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(8).actualHours(actualHours).build();
@@ -158,9 +158,9 @@ public class Initializer implements CommandLineRunner {
         actualHours.set(1, 0);
         actualHours.set(2, 12);
         actualHours.set(3, 11);
-        user = userrepo.findByUserName("Simon").get();
+        user = userrepo.findByUsername("Simon");
         users.add(user);
-        user = userrepo.findByUserName("Forhan").get();
+        user = userrepo.findByUsername("Forhan");
         users.add(user);
         subtask = SubTask.builder().name("XML schemas").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(10).actualHours(actualHours).build();
@@ -177,7 +177,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 0);
         actualHours.add(2, 0);
         actualHours.add(3, 0);
-        user = userrepo.findByUserName("Arti").get();
+        user = userrepo.findByUsername("Arti");
         users.add(user);
         subtask = SubTask.builder().name("BSUCstudy doc update").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(16).actualHours(actualHours).build();
@@ -188,7 +188,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 0);
         actualHours.add(2, 0);
         actualHours.add(3, 0);
-        user = userrepo.findByUserName("Forhan").get();
+        user = userrepo.findByUsername("Forhan");
         users.add(user);
 
         subtask = SubTask.builder().name("Maven site update").status(TaskStatus.ONGOING).users(users)
@@ -199,7 +199,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.set(1, 0);
         actualHours.set(2, 0);
         actualHours.set(3, 2);
-        user = userrepo.findByUserName("Emil").get();
+        user = userrepo.findByUsername("Emil");
         users.add(user);
 
         subtask = SubTask.builder().name("PI documentation update").status(TaskStatus.ONGOING).users(users)
@@ -219,7 +219,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 0);
         actualHours.add(2, 0);
         actualHours.add(3, 1);
-        user = userrepo.findByUserName("Emil").get();
+        user = userrepo.findByUsername("Emil");
         users.add(user);
         subtask = SubTask.builder().name("New feature Control").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(80).actualHours(actualHours).build();
@@ -237,17 +237,17 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 0);
         actualHours.add(2, 6);
         actualHours.add(3, 6);
-        user = userrepo.findByUserName("Arti").get();
+        user = userrepo.findByUsername("Arti");
         users.add(user);
-        user = userrepo.findByUserName("Hossein").get();
+        user = userrepo.findByUsername("Hossein");
         users.add(user);
-        user = userrepo.findByUserName("Kevin").get();
+        user = userrepo.findByUsername("Kevin");
         users.add(user);
-        user = userrepo.findByUserName("Emil").get();
+        user = userrepo.findByUsername("Emil");
         users.add(user);
-        user = userrepo.findByUserName("Forhan").get();
+        user = userrepo.findByUsername("Forhan");
         users.add(user);
-        user = userrepo.findByUserName("Simon").get();
+        user = userrepo.findByUsername("Simon");
         users.add(user);
         subtask = SubTask.builder().name("Analyis").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(80).actualHours(actualHours).build();
@@ -276,22 +276,22 @@ public class Initializer implements CommandLineRunner {
         rolerepo.save(role);
         Set<User> users = new HashSet<>();
         User u = User.builder().name("Arti").email("arti@bth.se").phone("0760762135").city("Karlskrona")
-                .userName("Arti").password("1111").passwordConfirm("1111").roles(roles).build();
+                .username("Arti").password("1111").passwordConfirm("1111").roles(roles).build();
         users.add(u);
         u = User.builder().name("Hossein").email("hossein@bth.se").phone("0770772135").city("Karlshamen")
-                .userName("Hossein").password("2222").passwordConfirm("2222").roles(roles).build();
+                .username("Hossein").password("2222").passwordConfirm("2222").roles(roles).build();
         users.add(u);
         u = User.builder().name("Kevin").email("fridrek@bth.se").phone("0770772135").city("Karlshamen")
-                .userName("Kevin").password("3333").passwordConfirm("3333").roles(roles).build();
+                .username("Kevin").password("3333").passwordConfirm("3333").roles(roles).build();
         users.add(u);
         u = User.builder().name("Emil").email("emil@bth.se").phone("0770772135").city("Karlshamen")
-                .userName("Emil").password("4444").passwordConfirm("4444").roles(roles).build();
+                .username("Emil").password("4444").passwordConfirm("4444").roles(roles).build();
         users.add(u);
         u = User.builder().name("Forhan").email("forhan@bth.se").phone("0770772135").city("Karlshamen")
-                .userName("Forhan").password("5555").passwordConfirm("5555").roles(roles).build();
+                .username("Forhan").password("5555").passwordConfirm("5555").roles(roles).build();
         users.add(u);
         u = User.builder().name("Simon").email("simon@bth.se").phone("0770772135").city("Karlshamen")
-                .userName("Simon").password("6666").passwordConfirm("6666").roles(roles).build();
+                .username("Simon").password("6666").passwordConfirm("6666").roles(roles).build();
         users.add(u);
         userrepo.saveAll(users);
 
@@ -299,28 +299,27 @@ public class Initializer implements CommandLineRunner {
         teamrepo.save(team);
         users = new HashSet<>();
         u = User.builder().name("Shatha").email("shatha@bth.se").phone("0760762135").city("Karlskrona")
-                .userName("Shatha").password("7777").passwordConfirm("7777").roles(roles).build();
+                .username("Shatha").password("7777").passwordConfirm("7777").roles(roles).build();
         users.add(u);
         u = User.builder().name("Hala").email("hala@bth.se").phone("0770772135").city("Karlshamen")
-                .userName("Hala").password("8888").passwordConfirm("8888").roles(roles).build();
+                .username("Hala").password("8888").passwordConfirm("8888").roles(roles).build();
         users.add(u);
         u = User.builder().name("Robal").email("robal@bth.se").phone("0770772135").city("Karlshamen")
-                .userName("Robal").password("9999").passwordConfirm("9999").roles(roles).build();
+                .username("Robal").password("9999").passwordConfirm("9999").roles(roles).build();
         users.add(u);
-
         userrepo.saveAll(users);
         team = Team.builder().name("Team2").users(users).build();
         teamrepo.save(team);
 
         roles.add(role);
         users = new HashSet<>();
-        u = User.builder().name("Admin").email("Admin@bth.se").phone("0760744135").city("Karlskrona")
-                .userName("admin").password("admin").passwordConfirm("admin").roles(roles).build();
+        u = User.builder().name("Administrator").email("Admin@bth.se").phone("0760744135").city("Karlskrona")
+                .username("Administrator").password("Administrator").passwordConfirm("Administrator").roles(roles).build();
         users.add(u);
         userrepo.saveAll(users);
         team = Team.builder().name("Team Administrators").users(users).build();
         teamrepo.save(team);
-        teamrepo.findByName("Team1").get().getUsers().forEach(System.out::println);
+      teamrepo.findByName("Team Administrators").get().getUsers().forEach(System.out::println);
         //  teamrepo.findAll().forEach(System.out::println);
     }
 

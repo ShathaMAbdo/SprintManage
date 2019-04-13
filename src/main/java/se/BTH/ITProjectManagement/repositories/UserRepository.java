@@ -17,13 +17,13 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     List<User> findByCity(@Param("city") String city);
 
-    Optional<User> findByUserNameOrEmail(String userName, String email);
+    Optional<User> findByUsernameOrEmail(String username, String email);
 
     List<User> findByIdIn(List<Long> userIds);
 
-    Optional<User> findByUserName(String userName);
+   User findByUsername(String username);
 
-    Boolean existsByUserName(String username);
+    Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);
 

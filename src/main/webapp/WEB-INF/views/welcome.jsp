@@ -32,8 +32,7 @@
         </form>
 
         <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
-              <a href="/api/team/teams" target="_blank"><h4>- Teams</h4></a>
-            <div>&nbsp;</div>
+
     </c:if>
 
 </div>

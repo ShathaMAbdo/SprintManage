@@ -30,7 +30,7 @@ public class User  {
    // private CustomerStatus status;
 
     @NotBlank
-    private String userName;
+    private String username;
     @NotBlank
     private String password;
     @NotBlank
