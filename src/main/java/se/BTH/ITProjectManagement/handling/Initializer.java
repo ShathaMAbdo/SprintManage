@@ -24,34 +24,28 @@ public class Initializer implements CommandLineRunner {
     private final TaskRepository taskRepo;
     private final SubTaskRepository subTaskRepo;
     private final SprintRepository sprintRepo;
-    private final BacklogTaskRepository backlogTaskRepo;
 
 
-    public Initializer(UserRepository repository, RoleRepository rolerepo, TeamRepository teamrepo, TaskRepository taskRepo, SubTaskRepository subTaskRepo, SprintRepository sprintRepo, BacklogTaskRepository backlogTaskRepo) {
+    public Initializer(UserRepository repository, RoleRepository rolerepo, TeamRepository teamrepo, TaskRepository taskRepo, SubTaskRepository subTaskRepo,  SprintRepository sprintRepo) {
         this.userrepo = repository;
         this.rolerepo = rolerepo;
         this.teamrepo = teamrepo;
         this.taskRepo = taskRepo;
         this.subTaskRepo = subTaskRepo;
         this.sprintRepo = sprintRepo;
-        this.backlogTaskRepo = backlogTaskRepo;
     }
 
-    void configure() {
-
-    }
 
     @Override
     public void run(String... strings) {
-//        teamrepo.deleteAll();
-//        rolerepo.deleteAll();
-//        userrepo.deleteAll();
-//        taskRepo.deleteAll();
-//        subTaskRepo.deleteAll();
-//        sprintRepo.deleteAll();
-//        backlogTaskRepo.deleteAll();
-//        addPersons();
-//        addBacklog();
+        teamrepo.deleteAll();
+        rolerepo.deleteAll();
+        userrepo.deleteAll();
+        taskRepo.deleteAll();
+        subTaskRepo.deleteAll();
+        sprintRepo.deleteAll();
+        addPersons();
+        addBacklog();
     }
 
     private void addBacklog() {
@@ -257,13 +251,14 @@ public class Initializer implements CommandLineRunner {
                 .build();
         tasks.add(task);
         taskRepo.saveAll(tasks);
-        Sprint sprint = Sprint.builder().name("CFT55 sprint 1910-1912").daily_meeting(LocalTime.of(13, 00))
+
+        Sprint sprint = Sprint.builder().plannedPeriod(14).tasks(tasks).team(teamrepo.findByName("Team1").get())
+                .name("CFT55 sprint 1910-1912").daily_meeting(LocalTime.of(13, 00))
                 .delivery(LocalDate.of(2019, 3, 22)).demo(LocalDate.of(2019, 3, 21))
                 .goal("Finish TR HX33029").retrospective(LocalDate.of(2019, 3, 21)).review(DayOfWeek.FRIDAY).build();
         sprintRepo.save(sprint);
-        BacklogTask backlogTask = BacklogTask.builder().plannedPeriod(14).tasks(tasks).team(teamrepo.findByName("Team1").get())
-                .sprint(sprint).build();
-        backlogTaskRepo.save(backlogTask);
+        Sprint sprint1=sprintRepo.findByName("CFT55 sprint 1910-1912").get();
+       System.out.println(sprint);
     }
 
 
@@ -319,7 +314,7 @@ public class Initializer implements CommandLineRunner {
         userrepo.saveAll(users);
         team = Team.builder().name("Team Administrators").users(users).build();
         teamrepo.save(team);
-      teamrepo.findByName("Team Administrators").get().getUsers().forEach(System.out::println);
+      //teamrepo.findByName("Team Administrators").get().getUsers().forEach(System.out::println);
         //  teamrepo.findAll().forEach(System.out::println);
     }
 

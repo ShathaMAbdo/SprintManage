@@ -29,8 +29,8 @@ public class UserController {
 
     @Autowired
     private UserRepository repository;
-    @Autowired
-    private TeamRepository teamRepository;
+//    @Autowired
+//    private TeamRepository teamRepository;
     @Autowired
     private SecurityService securityService;
     @Autowired
@@ -66,7 +66,12 @@ public class UserController {
         model.addAttribute("userAttr", repository.findById(id));
         return "userform";
     }
-
+    @RequestMapping(value = "/api/user/profile", method = RequestMethod.GET)
+    public String profile(User user, Model model) {
+        log.debug("Request to open the edit user form page");
+        model.addAttribute("userAttr",user);
+        return "profile";
+    }
     // Deleting the specified user.
     @RequestMapping(value = "/api/user/delete", method = RequestMethod.GET)
     public String delete(@RequestParam(value="id", required=true) String id, Model model) {
@@ -102,7 +107,7 @@ public class UserController {
 
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "redirect:/users";
+        return "login";
     }
 
     @GetMapping("/login")
@@ -113,7 +118,7 @@ public class UserController {
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
 
-        return "login";
+        return "/login";
     }
 
 //    @GetMapping({"/", "/welcome"})

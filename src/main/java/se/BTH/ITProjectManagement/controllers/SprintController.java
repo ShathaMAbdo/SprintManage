@@ -28,7 +28,7 @@ public class SprintController {
         this.repository = repository;
     }
 
-    @GetMapping("/sprints")
+    @GetMapping("/sprint")
     Collection<Sprint> sprints() {
         return repository.findAll();
     }
@@ -48,14 +48,14 @@ public class SprintController {
     }
 
     @PutMapping("/sprint")
-    ResponseEntity<Sprint> updateSprint(@Valid @RequestBody Sprint sprint) {
+    ResponseEntity<Sprint> updateTask(@Valid @RequestBody Sprint sprint) {
         log.info("Request to update sprint: {}", sprint);
         Sprint result = repository.save(sprint);
         return ResponseEntity.ok().body(result);
     }
 
     @DeleteMapping("/sprint/{id}")
-    public ResponseEntity<?> deleteSprint(@PathVariable String id) {
+    public ResponseEntity<?> deletesprint(@PathVariable String id) {
         log.info("Request to delete sprint: {}", id);
         repository.deleteById(id);
         return ResponseEntity.ok().build();

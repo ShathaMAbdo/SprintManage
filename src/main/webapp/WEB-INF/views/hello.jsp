@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Create an account</title>
+    <title>It project management</title>
 
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 
@@ -33,6 +33,7 @@
 
         <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
               <a href="/api/team/teams" target="_blank"><h4>- Teams</h4></a>
+              <a href="/api/user/profile" target="_blank"><h4>- Profile</h4></a>
             <div>&nbsp;</div>
     </c:if>
 
