@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import se.BTH.ITProjectManagement.models.Role;
 import se.BTH.ITProjectManagement.models.RoleName;
 import se.BTH.ITProjectManagement.models.User;
-import se.BTH.ITProjectManagement.repositories.TeamRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
 import se.BTH.ITProjectManagement.security.SecurityService;
 import se.BTH.ITProjectManagement.security.UserService;
@@ -53,8 +52,8 @@ public class UserController {
         log.debug("Request to open the new user form page");
        Set<Role> roles= new HashSet<>();
         roles.add(Role.builder().name(RoleName.ROLE_USER).build());
-        User user=User.builder().roles(roles).build();
-        repository.save(user);
+        User user=User.builder().roles(roles).active(true).build();
+      //  repository.save(user);
         model.addAttribute("userAttr", user);
         return "userform";
     }
@@ -75,7 +74,9 @@ public class UserController {
     // Deleting the specified user.
     @RequestMapping(value = "/api/user/delete", method = RequestMethod.GET)
     public String delete(@RequestParam(value="id", required=true) String id, Model model) {
-        repository.deleteById(id);
+        User user=repository.findById(id).get();
+        user.changeActive();
+        repository.save(user);
         return "redirect:users";
     }
 
@@ -107,7 +108,7 @@ public class UserController {
 
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "login";
+        return "hello";
     }
 
     @GetMapping("/login")
@@ -120,9 +121,9 @@ public class UserController {
 
         return "/login";
     }
-
-//    @GetMapping({"/", "/welcome"})
-//    public String welcome(Model model) {
-//        return "welcome";
-//    }
+    @GetMapping(value={"/","/api/", "/api/hello"})
+    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="Administrator") String name) {
+        model.addAttribute("name", name);
+        return "hello";
+    }
 }

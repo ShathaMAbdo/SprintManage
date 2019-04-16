@@ -27,6 +27,7 @@ public class User  {
     private String phone;
     private String city;
     private Set<Role> roles;
+    private boolean active;
    // private CustomerStatus status;
 
     @NotBlank
@@ -35,6 +36,9 @@ public class User  {
     private String password;
     @NotBlank
     private  String passwordConfirm;
+    public boolean changeActive(){
+        return active=!active ;
+    }
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();

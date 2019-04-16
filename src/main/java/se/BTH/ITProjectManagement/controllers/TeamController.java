@@ -63,8 +63,8 @@ public class TeamController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addTeam(Model model) {
         log.debug("Request to open the new team form page");
-        Team team=Team.builder().name("").build();
-        repository.save(team);
+        Team team=Team.builder().active(true).build();
+       // repository.save(team);
         model.addAttribute("teamAttr", team);
         return "teamform";
     }
@@ -80,14 +80,21 @@ public class TeamController {
     // Deleting the specified team.
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam(value="id", required=true) String id, Model model) {
-        repository.deleteById(id);
+       Team team=repository.findById(id).get();
+       team.changeActive();
+       repository.save(team);
         return "redirect:teams";
     }
 
     // Adding a new team or updating an existing team.
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("teamAttr") Team team) {                  // needs test for edit or create
+      if (team.getId()!="")
         repository.save(team);
+      else {
+          Team team1=Team.builder().name(team.getName()).active(true).build();
+          repository.save(team1);
+      }
         return "redirect:teams";
     }
 }

@@ -20,9 +20,11 @@ public class Team {
     @Id
     private String id;
     private String name;
-
-    Set<User> users;
-
+    private boolean active;
+    private Set<User> users;
+public boolean changeActive(){
+    return active=!active ;
+}
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();

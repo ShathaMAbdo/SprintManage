@@ -4,11 +4,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-	    <title>Team form</title>
+	    <title>Create Team</title>
 	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>
+	<div class="container">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <ul class="nav navbar-nav">
+                                <li><a class="navbar-brand" href="/" th:href="@{/}">Home</a></li>
+                                <li><a href="/api/user/users" th:href="@{/api/user/users}">USERS</a></li>
+                                <li><a href="/api/team/teams" th:href="@{/api/team/teams}">Teams</a></li>
+                                <li><a href="/api/sprint/sprints" th:href="@{api/sprint/sprints}">SPRINT</a></li>
+                                <li><a href="/api/sprint/add" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </nav>
+         </div>
 	    <div class="container">
 	        <h3 id="form_header" class="text-warning" align="center">Team Form</h3>
 	        <div>&nbsp;</div>
@@ -19,6 +35,8 @@
 	        	<form:hidden path="id" />
 	            <label for="team_name">Enter Name: </label>
 	            <form:input id="team_name" cssClass="form-control" path="name" />
+	            <label for="team_name">Team Activity: </label>
+                <form:input id="team_name" cssClass="form-control" path="Active" />
 	            <div>&nbsp;</div>
 	            <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
 	        </form:form>

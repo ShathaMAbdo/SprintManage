@@ -38,14 +38,14 @@ public class Initializer implements CommandLineRunner {
 
     @Override
     public void run(String... strings) {
-        teamrepo.deleteAll();
-        rolerepo.deleteAll();
-        userrepo.deleteAll();
-        taskRepo.deleteAll();
-        subTaskRepo.deleteAll();
-        sprintRepo.deleteAll();
-        addPersons();
-        addBacklog();
+//        teamrepo.deleteAll();
+//        rolerepo.deleteAll();
+//        userrepo.deleteAll();
+//        taskRepo.deleteAll();
+//        subTaskRepo.deleteAll();
+//        sprintRepo.deleteAll();
+//        addPersons();
+//        addBacklog();
     }
 
     private void addBacklog() {
@@ -270,49 +270,49 @@ public class Initializer implements CommandLineRunner {
         role = Role.builder().name(RoleName.ROLE_ADMIN).build();
         rolerepo.save(role);
         Set<User> users = new HashSet<>();
-        User u = User.builder().name("Arti").email("arti@bth.se").phone("0760762135").city("Karlskrona")
+        User u = User.builder().name("Arti").email("arti@bth.se").active(true).phone("0760762135").city("Karlskrona")
                 .username("Arti").password("1111").passwordConfirm("1111").roles(roles).build();
         users.add(u);
-        u = User.builder().name("Hossein").email("hossein@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Hossein").email("hossein@bth.se").active(true).phone("0770772135").city("Karlshamen")
                 .username("Hossein").password("2222").passwordConfirm("2222").roles(roles).build();
         users.add(u);
-        u = User.builder().name("Kevin").email("fridrek@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Kevin").email("fridrek@bth.se").active(true).phone("0770772135").city("Karlshamen")
                 .username("Kevin").password("3333").passwordConfirm("3333").roles(roles).build();
         users.add(u);
-        u = User.builder().name("Emil").email("emil@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Emil").email("emil@bth.se").active(true).phone("0770772135").city("Karlshamen")
                 .username("Emil").password("4444").passwordConfirm("4444").roles(roles).build();
         users.add(u);
-        u = User.builder().name("Forhan").email("forhan@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Forhan").email("forhan@bth.se").active(true).phone("0770772135").city("Karlshamen")
                 .username("Forhan").password("5555").passwordConfirm("5555").roles(roles).build();
         users.add(u);
-        u = User.builder().name("Simon").email("simon@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Simon").email("simon@bth.se").active(true).phone("0770772135").city("Karlshamen")
                 .username("Simon").password("6666").passwordConfirm("6666").roles(roles).build();
         users.add(u);
         userrepo.saveAll(users);
 
-        Team team = Team.builder().name("Team1").users(users).build();
+        Team team = Team.builder().name("Team1").active(true).users(users).build();
         teamrepo.save(team);
         users = new HashSet<>();
-        u = User.builder().name("Shatha").email("shatha@bth.se").phone("0760762135").city("Karlskrona")
+        u = User.builder().name("Shatha").email("shatha@bth.se").active(true).phone("0760762135").city("Karlskrona")
                 .username("Shatha").password("7777").passwordConfirm("7777").roles(roles).build();
         users.add(u);
-        u = User.builder().name("Hala").email("hala@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Hala").email("hala@bth.se").active(true).phone("0770772135").city("Karlshamen")
                 .username("Hala").password("8888").passwordConfirm("8888").roles(roles).build();
         users.add(u);
-        u = User.builder().name("Robal").email("robal@bth.se").phone("0770772135").city("Karlshamen")
+        u = User.builder().name("Robal").email("robal@bth.se").active(true).phone("0770772135").city("Karlshamen")
                 .username("Robal").password("9999").passwordConfirm("9999").roles(roles).build();
         users.add(u);
         userrepo.saveAll(users);
-        team = Team.builder().name("Team2").users(users).build();
+        team = Team.builder().name("Team2").active(true).users(users).build();
         teamrepo.save(team);
 
         roles.add(role);
         users = new HashSet<>();
-        u = User.builder().name("Administrator").email("Admin@bth.se").phone("0760744135").city("Karlskrona")
+        u = User.builder().name("Administrator").email("Admin@bth.se").active(true).phone("0760744135").city("Karlskrona")
                 .username("Administrator").password("Administrator").passwordConfirm("Administrator").roles(roles).build();
         users.add(u);
         userrepo.saveAll(users);
-        team = Team.builder().name("Team Administrators").users(users).build();
+        team = Team.builder().name("Team Administrators").active(true).users(users).build();
         teamrepo.save(team);
       //teamrepo.findByName("Team Administrators").get().getUsers().forEach(System.out::println);
         //  teamrepo.findAll().forEach(System.out::println);

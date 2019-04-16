@@ -1,10 +1,6 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
-<!DOCTYPE html>
-<html lang="en">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,18 +18,50 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 </head>
 <body>
 <div class="container">
+  <div th:fragment="header">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/" th:href="@{/}">Home</a>
+                    <ul class="nav navbar-nav">
+                        <li><a href="api/user/users" th:href="@{/api/user/users}">USERS</a></li>
+                        <li><a href="api/team/teams" th:href="@{/api/team/teams}">TEAMS</a></li>
+                        <li><a href="api/team/add" th:href="@{/api/team/add}">Create Team</a></li>
+                         <li><a href="api/sprint/sprints" th:href="@{api/sprint/sprints}">SPRINT</a></li>
+                         <li><a href="api/sprint/add" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+
+                         <a  onclick="document.forms['logoutForm'].submit()">Logout</a>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="jumbotron">
+            <div class="row text-center">
+                <div class="">
+                    <h2>IT PROJECTS MANAGEMENT</h2>
+                     <h2>Welcome ${pageContext.request.userPrincipal.name}  </h2>
+                </div>
+            </div>
+          <!--  <div class="row text-center">
+                <img src="../../static/images/download.png" width="2400"
+                     th:src="@{/images/download.png}"/>
+            </div>-->
+        </div>
+    </div>
 
     <c:if test="${pageContext.request.userPrincipal.name != null}">
         <form id="logoutForm" method="POST" action="${contextPath}/logout">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
 
-        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
-              <a href="/api/team/teams" target="_blank"><h4>- Teams</h4></a>
-              <a href="/api/user/profile" target="_blank"><h4>- Profile</h4></a>
+          <!--    <a href="/api/team/teams" target="_blank"><h4>- Teams</h4></a>
+              <a href="/api/user/profile" target="_blank"><h4>- Profile</h4></a>-->
             <div>&nbsp;</div>
     </c:if>
 

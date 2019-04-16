@@ -55,7 +55,35 @@
                     </div>
                 </spring:bind>
 
+                <spring:bind path="name">
+                          <div class="form-group ${status.error ? 'has-error' : ''}">
+                          <form:input type="text" path="name" class="form-control"
+                                      placeholder="Enter your full name"></form:input>
+                          <form:errors path="name"></form:errors>
+                          </div>
+                </spring:bind>
 
+                <spring:bind path="email">
+                          <div class="form-group ${status.error ? 'has-error' : ''}">
+                          <form:input type="email" path="email" class="form-control"
+                                       placeholder="Enter your email"></form:input>
+                          <form:errors path="email"></form:errors>
+                          </div>
+                </spring:bind>
+                <spring:bind path="phone">
+                           <div class="form-group ${status.error ? 'has-error' : ''}">
+                           <form:input type="phone" path="phone" class="form-control"
+                                       placeholder="Enter your phone"></form:input>
+                           <form:errors path="phone"></form:errors>
+                           </div>
+                </spring:bind>
+                <spring:bind path="city">
+                           <div class="form-group ${status.error ? 'has-error' : ''}">
+                           <form:input type="text" path="city" class="form-control"
+                                       placeholder="Enter your city"></form:input>
+                           <form:errors path="city"></form:errors>
+                           </div>
+                </spring:bind>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     </form:form>
 
