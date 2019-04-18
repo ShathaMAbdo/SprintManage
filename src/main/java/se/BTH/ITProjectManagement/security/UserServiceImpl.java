@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import se.BTH.ITProjectManagement.models.RoleName;
 import se.BTH.ITProjectManagement.models.User;
 import se.BTH.ITProjectManagement.repositories.RoleRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,8 +23,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
+        List list=new ArrayList();
+        list.add(roleRepository.findByName(RoleName.ROLE_USER));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
+        user.setRoles(new ArrayList<>(list));
         userRepository.save(user);
     }
 

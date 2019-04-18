@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -26,7 +27,7 @@ public class User  {
     private String email;
     private String phone;
     private String city;
-    private Set<Role> roles;
+    private List<Role> roles;
     private boolean active;
    // private CustomerStatus status;
 

@@ -3,6 +3,7 @@ package se.BTH.ITProjectManagement.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,8 @@ import se.BTH.ITProjectManagement.security.SecurityService;
 import se.BTH.ITProjectManagement.security.UserService;
 import se.BTH.ITProjectManagement.security.UserValidator;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,8 +42,10 @@ public class UserController {
     // Displaying the initial users list.
 
     @RequestMapping(value = "/api/user/users", method = RequestMethod.GET)
-    public String getUsers(Model model) {
-        log.debug("Request to fetch all users from the mongo database");
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getUsers(Model model, Principal principal) {
+        log.debug("Request to fetch all users from the mongo database"+principal.getName());
+        //if(principal.getName())
         List<User> user_list = repository.findAll();
         model.addAttribute("users", user_list);
         return "user";
@@ -50,7 +55,7 @@ public class UserController {
     @RequestMapping(value = "/api/user/add", method = RequestMethod.GET)
     public String addUser(Model model) {
         log.debug("Request to open the new user form page");
-       Set<Role> roles= new HashSet<>();
+       List<Role> roles= new ArrayList<>();
         roles.add(Role.builder().name(RoleName.ROLE_USER).build());
         User user=User.builder().roles(roles).active(true).build();
       //  repository.save(user);
@@ -83,16 +88,15 @@ public class UserController {
     // Adding a new user or updating an existing user.
     @RequestMapping(value = "/api/user/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("userAttr") User user) {                  // needs test for edit or create
-        repository.save(user);
+            repository.save(user);
         return "redirect:users";
     }
 
     @GetMapping("/registration")
     public String registration(Model model) {
-        Set<Role> roles= new HashSet<>();
+        List<Role> roles= new ArrayList<>();
         roles.add(Role.builder().name(RoleName.ROLE_USER).build());
-
-        model.addAttribute("userForm", User.builder().roles(roles).build());
+        model.addAttribute("userForm", User.builder().roles(roles).active(true).build());
 
         return "registration";
     }
@@ -104,8 +108,10 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        userService.save(userForm);
-
+        List<Role> list= new ArrayList<>();
+        list.add(Role.builder().name(RoleName.ROLE_USER).build());
+        userService.save(User.builder().name(userForm.getName()).active(true).password(userForm.getPassword())
+                .username(userForm.getUsername()).city(userForm.getCity()).phone(userForm.getPhone()).build());
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
         return "hello";

@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Transactional
 public interface RoleRepository extends MongoRepository<Role,String> {
-    Optional<Role> findByName(RoleName name);
+    Role findByName(RoleName name);
 }

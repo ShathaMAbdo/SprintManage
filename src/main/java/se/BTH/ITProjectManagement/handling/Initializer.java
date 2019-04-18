@@ -265,11 +265,11 @@ public class Initializer implements CommandLineRunner {
     private void addPersons() {
         Role role = Role.builder().name(RoleName.ROLE_USER).build();
         rolerepo.save(role);
-        Set<Role> roles = new HashSet<>();
+        List<Role> roles = new ArrayList<>();
         roles.add(role);
         role = Role.builder().name(RoleName.ROLE_ADMIN).build();
         rolerepo.save(role);
-        Set<User> users = new HashSet<>();
+        List<User> users = new ArrayList<>();
         User u = User.builder().name("Arti").email("arti@bth.se").active(true).phone("0760762135").city("Karlskrona")
                 .username("Arti").password("1111").passwordConfirm("1111").roles(roles).build();
         users.add(u);
@@ -292,7 +292,7 @@ public class Initializer implements CommandLineRunner {
 
         Team team = Team.builder().name("Team1").active(true).users(users).build();
         teamrepo.save(team);
-        users = new HashSet<>();
+        users = new ArrayList<>();
         u = User.builder().name("Shatha").email("shatha@bth.se").active(true).phone("0760762135").city("Karlskrona")
                 .username("Shatha").password("7777").passwordConfirm("7777").roles(roles).build();
         users.add(u);
@@ -307,7 +307,7 @@ public class Initializer implements CommandLineRunner {
         teamrepo.save(team);
 
         roles.add(role);
-        users = new HashSet<>();
+        users = new ArrayList<>();
         u = User.builder().name("Administrator").email("Admin@bth.se").active(true).phone("0760744135").city("Karlskrona")
                 .username("Administrator").password("Administrator").passwordConfirm("Administrator").roles(roles).build();
         users.add(u);

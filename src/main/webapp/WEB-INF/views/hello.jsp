@@ -28,13 +28,13 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/" th:href="@{/}">Home</a>
                     <ul class="nav navbar-nav">
-                        <li><a href="api/user/users" th:href="@{/api/user/users}">USERS</a></li>
-                        <li><a href="api/team/teams" th:href="@{/api/team/teams}">TEAMS</a></li>
-                        <li><a href="api/team/add" th:href="@{/api/team/add}">Create Team</a></li>
-                         <li><a href="api/sprint/sprints" th:href="@{api/sprint/sprints}">SPRINT</a></li>
-                         <li><a href="api/sprint/add" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                        <li><a href="api/user/users" style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
+                        <li><a href="api/team/teams" style="color:red;"th:href="@{/api/team/teams}">TEAMS</a></li>
+                        <li><a href="api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
+                         <li><a href="api/sprint/sprints" style="color:red;"th:href="@{api/sprint/sprints}">SPRINTS</a></li>
+                         <li><a href="api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
 
-                         <a  onclick="document.forms['logoutForm'].submit()">Logout</a>
+                         <a style="color:black;" onclick="document.forms['logoutForm'].submit()">Logout</a>
                     </ul>
 
                 </div>
@@ -45,15 +45,15 @@
             <div class="row text-center">
                 <div class="">
                     <h2>IT PROJECTS MANAGEMENT</h2>
-                     <h2>Welcome ${pageContext.request.userPrincipal.name}  </h2>
+                     <h2><font color="red">Welcome ${pageContext.request.userPrincipal.name}  </h2>
                 </div>
             </div>
-          <!--  <div class="row text-center">
-                <img src="../../static/images/download.png" width="2400"
-                     th:src="@{/images/download.png}"/>
-            </div>-->
+            <div class="row text-center">
+                      <img src="${pageContext.request.contextPath}/images/logo-sigma-technology.png"/>
+
+            </div>
         </div>
-    </div>
+
 
     <c:if test="${pageContext.request.userPrincipal.name != null}">
         <form id="logoutForm" method="POST" action="${contextPath}/logout">

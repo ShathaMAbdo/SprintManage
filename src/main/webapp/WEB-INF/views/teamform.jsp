@@ -15,10 +15,10 @@
                         <div class="navbar-header">
                             <ul class="nav navbar-nav">
                                 <li><a class="navbar-brand" href="/" th:href="@{/}">Home</a></li>
-                                <li><a href="/api/user/users" th:href="@{/api/user/users}">USERS</a></li>
-                                <li><a href="/api/team/teams" th:href="@{/api/team/teams}">Teams</a></li>
-                                <li><a href="/api/sprint/sprints" th:href="@{api/sprint/sprints}">SPRINT</a></li>
-                                <li><a href="/api/sprint/add" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                                <li><a href="/api/user/users"style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
+                                <li><a href="/api/team/teams" style="color:red;"th:href="@{/api/team/teams}">Teams</a></li>
+                                <li><a href="/api/sprint/sprints"style="color:red;" th:href="@{api/sprint/sprints}">SPRINTS</a></li>
+                                <li><a href="/api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
                             </ul>
 
                         </div>
@@ -26,20 +26,41 @@
                 </nav>
          </div>
 	    <div class="container">
-	        <h3 id="form_header" class="text-warning" align="center">Team Form</h3>
+	        <h3 id="form_header" class="text-warning" align="center"> Team</h3>
 	        <div>&nbsp;</div>
 
 			<!-- Team input form to add a new team or update the existing team-->
 	        <c:url var="saveUrl" value="/api/team/save" />
-	        <form:form id="team_form" modelAttribute="teamAttr" method="POST" action="${saveUrl}">
+	        <form:form id="team_form" modelAttribute="teamAttr"   method="POST" action="${saveUrl}">
 	        	<form:hidden path="id" />
 	            <label for="team_name">Enter Name: </label>
 	            <form:input id="team_name" cssClass="form-control" path="name" />
 	            <label for="team_name">Team Activity: </label>
                 <form:input id="team_name" cssClass="form-control" path="Active" />
 	            <div>&nbsp;</div>
-	            <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
-	        </form:form>
+	            <table id="members_table" class="table">
+            	        	<thead>
+            	            	<tr align="center">
+            	            		<th>Id</th>
+            	            		<th>Name</th>
+            	            		<th colspan="2"></th>
+
+            	            	</tr>
+            	        	</thead>
+            	        	<tbody>
+            	            	<c:forEach items="${members}" var="user">
+            	                	<tr align="left">
+            	                    	<td><c:out value="${user.id}" /></td>
+            	                    	<td><c:out value="${user.name}" /></td>
+            	                    	<td>
+            	                        	<c:url var="deleteUrl" value="/api/team/deletemember?id=${user.id}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Remove</a>
+            	                    	</td>
+            	                	</tr>
+            	            	</c:forEach>
+            	        	</tbody>
+            	 </table>
+            	<button  id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+            	</form:form>
 	    </div>
 	</body>
 </html>

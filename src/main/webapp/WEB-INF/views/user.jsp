@@ -12,10 +12,10 @@
                         <div class="navbar-header">
                             <ul class="nav navbar-nav">
                                 <li><a class="navbar-brand" href="/" th:href="@{/}">Home</a></li>
-                                <li><a href="/api/team/teams" th:href="@{/api/team/teams}">TEAMS</a></li>
-                                <li><a href="/api/team/add" th:href="@{/api/team/add}">Create Team</a></li>
-                                 <li><a href="/api/sprint/sprints" th:href="@{/api/sprint/sprints}">SPRINT</a></li>
-                                 <li><a href="/api/sprint/add" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                                <li><a href="/api/team/teams" style="color:red;"th:href="@{/api/team/teams}">TEAMS</a></li>
+                                <li><a href="/api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
+                                 <li><a href="/api/sprint/sprints"style="color:red;" th:href="@{/api/sprint/sprints}">SPRINT</a></li>
+                                 <li><a href="/api/sprint/add" style="color:red;"th:href="@{/api/sprint/add}">Create Sprint</a></li>
                             </ul>
 
                         </div>
@@ -23,7 +23,7 @@
                 </nav>
          </div>
 		<div class="container">
-			<h2 id="article_header" class="text-warning" align="center">All Teams Members</h2>
+			<h2 id="article_header" class="text-warning" align="center">All Users</h2>
 	    	<div>&nbsp;</div>
 			
 	    	<!-- Table to display the user list from the mongo database -->
@@ -53,7 +53,7 @@
 	                        	<c:url var="editUrl" value="/api/user/edit?id=${user.id}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
 	                    	</td>
 	                    	<td>
-	                        	<c:url var="deleteUrl" value="/api/user/delete?id=${user.id}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Un/Active</a>
+	                        	<c:url var="deleteUrl" value="/api/user/delete?id=${user.id}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Dis/Enabled</a>
 	                    	</td>
 	                	</tr>
 	            	</c:forEach>

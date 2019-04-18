@@ -34,9 +34,7 @@ public class TaskController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addTask(Model model) {
         log.debug("Request to open the new task form page");
-        Task task=Task.builder().storyPoints(0).build();
-        repository.save(task);
-        model.addAttribute("taskAttr", task);
+        model.addAttribute("taskAttr", Task.builder().storyPoints(0).build());
         return "taskform";
     }
 
@@ -58,7 +56,14 @@ public class TaskController {
     // Adding a new task or updating an existing task.
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("taskAttr") Task task) {                  // needs test for edit or create
-        repository.save(task);
+        if (task.getId()!="")
+            repository.save(task);
+        else {
+            Task task1=Task.builder().name(task.getName()).storyPoints(task.getStoryPoints()).priority(task.getPriority())
+                    .subTasks(task.getSubTasks()).build();
+            repository.save(task1);
+        }
+
         return "redirect:tasks";
     }
 }

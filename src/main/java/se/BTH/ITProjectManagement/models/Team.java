@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,10 +22,12 @@ public class Team {
     private String id;
     private String name;
     private boolean active;
-    private Set<User> users;
-public boolean changeActive(){
-    return active=!active ;
-}
+    private List<User> users;
+
+    public boolean changeActive() {
+        return active = !active;
+    }
+
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
