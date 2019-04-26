@@ -49,12 +49,15 @@
 	                    	<td><c:out value="${user.phone}" /></td>
                             <td><c:out value="${user.city}" /></td>
                             <td><c:out value="${user.active}" /></td>
-	                    	<td>
-	                        	<c:url var="editUrl" value="/api/user/edit?id=${user.id}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
-	                    	</td>
+	                     <!-- 	<td>
+	                      	<c:url var="editUrl" value="/api/user/edit?id=${user.id}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
+	                    	</td> -->
 	                    	<td>
 	                        	<c:url var="deleteUrl" value="/api/user/delete?id=${user.id}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Dis/Enabled</a>
 	                    	</td>
+	                    	<td>
+                            	<c:url var="adminUrl" value="/api/user/admin?id=${user.id}" /><a id="admin" href="${adminUrl}" class="btn btn-info">make admin</a>
+                            </td>
 	                	</tr>
 	            	</c:forEach>
 	        	</tbody>

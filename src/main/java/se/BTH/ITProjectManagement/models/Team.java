@@ -22,7 +22,7 @@ public class Team {
     private String id;
     private String name;
     private boolean active;
-    private List<User> users;
+     List<User> users;
 
     public boolean changeActive() {
         return active = !active;

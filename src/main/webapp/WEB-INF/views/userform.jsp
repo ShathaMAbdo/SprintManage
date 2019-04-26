@@ -17,6 +17,10 @@
 	        <c:url var="saveUrl" value="/api/user/save" />
 	        <form:form id="user_form" modelAttribute="userAttr" method="POST" action="${saveUrl}">
 	        	<form:hidden path="id" />
+	        	<form:hidden path="password" />
+	          	<form:hidden path="username" />
+	            <form:hidden path="roles" />
+	            <form:hidden path="active" />
 	            <label for="user_name">Enter Name: </label>
 	            <form:input id="user_name" cssClass="form-control" path="name" />
 	            <label for="user_name">Enter Email: </label>
@@ -25,9 +29,12 @@
                 <form:input id="user_name" cssClass="form-control" path="phone" />
                 <label for="user_name">Enter City: </label>
                 <form:input id="user_name" cssClass="form-control" path="city" />
+
 	            <div>&nbsp;</div>
 
 	            <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-secondary" tag={Link} to="/">Cancel</button>
+
 	        </form:form>
 	    </div>
 	</body>

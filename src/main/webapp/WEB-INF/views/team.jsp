@@ -25,6 +25,7 @@
      </div>
      <div class="container">
            	<h2 id="article_header" class="text-warning" align="center">All Teams</h2>
+
 	    	<!-- Table to display the user list from the mongo database -->
 	    	<table id="teams_table" class="table">
 	        	<thead>
