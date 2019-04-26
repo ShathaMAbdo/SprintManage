@@ -43,13 +43,9 @@
 	                    	<td><c:out value="${team.id}" /></td>
 	                    	<td><c:out value="${team.name}" /></td>
 	                    	<td><c:out value="${team.active}" /></td>
-
-	                    	<td>
-	                        	<c:url var="deleteUrl" value="/api/team/delete?id=${team.id}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Dis/Enabled</a>
+	                        <td>
+	                        	<c:url var="addUrl" value="/api/sprint/addteam?id=${sprintid}&teamid=${team.id}" /><a id="add" href="${addUrl}" class="btn btn-success">Add</a>
 	                    	</td>
-	                    	<td>
-                            	 <c:url var="editUrl" value="/api/team/edit?id=${team.id}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
-                            </td>
 
 	                	</tr>
 	            	</c:forEach>

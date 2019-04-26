@@ -39,13 +39,13 @@
 
             <th>Name</th>
             <th>Goal</th>
+            <th>Start</th>
             <th>Delivery</th>
             <th>Retrospective</th>
             <th>Demo</th>
             <th>Review</th>
             <th>Daily meeting</th>
             <th colspan="2"></th>
-
         </tr>
         </thead>
         <tbody>
@@ -53,6 +53,7 @@
             <tr align="left">
                 <td><c:out value="${sprint.name}" /></td>
                 <td><c:out value="${sprint.goal}" /></td>
+                <td><c:out value="${sprint.start}" /></td>
                 <td><c:out value="${sprint.delivery}" /></td>
                 <td><c:out value="${sprint.retrospective}" /></td>
                 <td><c:out value="${sprint.demo}" /></td>

@@ -1,7 +1,5 @@
 package se.BTH.ITProjectManagement.handling;
 
-import static org.apache.log4j.BasicConfigurator.configure;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import se.BTH.ITProjectManagement.models.*;
@@ -26,7 +24,7 @@ public class Initializer implements CommandLineRunner {
     private final SprintRepository sprintRepo;
 
 
-    public Initializer(UserRepository repository, RoleRepository rolerepo, TeamRepository teamrepo, TaskRepository taskRepo, SubTaskRepository subTaskRepo,  SprintRepository sprintRepo) {
+    public Initializer(UserRepository repository, RoleRepository rolerepo, TeamRepository teamrepo, TaskRepository taskRepo, SubTaskRepository subTaskRepo, SprintRepository sprintRepo) {
         this.userrepo = repository;
         this.rolerepo = rolerepo;
         this.teamrepo = teamrepo;
@@ -254,11 +252,13 @@ public class Initializer implements CommandLineRunner {
 
         Sprint sprint = Sprint.builder().plannedPeriod(14).tasks(tasks).team(teamrepo.findByName("Team1").get())
                 .name("CFT55 sprint 1910-1912").daily_meeting(LocalTime.of(13, 00))
-                .delivery(LocalDate.of(2019, 3, 22)).demo(LocalDate.of(2019, 3, 21))
+                .start(LocalDate.of(2019, 3, 5)).demo(LocalDate.of(2019, 3, 21))
                 .goal("Finish TR HX33029").retrospective(LocalDate.of(2019, 3, 21)).review(DayOfWeek.FRIDAY).build();
+        sprint.calcDelivery();
         sprintRepo.save(sprint);
-        Sprint sprint1=sprintRepo.findByName("CFT55 sprint 1910-1912").get();
-       System.out.println(sprint);
+        Sprint sprint1 = sprintRepo.findByName("CFT55 sprint 1910-1912").get();
+        System.out.println(sprint1.getDelivery().toString());
+        System.out.println(sprint1.getStart().toString());
     }
 
 
@@ -314,7 +314,7 @@ public class Initializer implements CommandLineRunner {
         userrepo.saveAll(users);
         team = Team.builder().name("Team Administrators").active(true).users(users).build();
         teamrepo.save(team);
-      //teamrepo.findByName("Team Administrators").get().getUsers().forEach(System.out::println);
+        //teamrepo.findByName("Team Administrators").get().getUsers().forEach(System.out::println);
         //  teamrepo.findAll().forEach(System.out::println);
     }
 

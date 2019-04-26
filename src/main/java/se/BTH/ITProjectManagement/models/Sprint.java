@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -26,13 +27,31 @@ public class Sprint {
     private Team team;
     private String name;
     private String goal;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate start;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate delivery;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate retrospective;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate demo;
     private DayOfWeek review;
     private LocalTime daily_meeting;
     private Set<Task> tasks;
     private Integer plannedPeriod; // how many days will sprint take
+
+    public LocalDate calcDelivery() {
+        int count = 0;
+        this.delivery = this.start.minusDays(1);
+       // System.out.println("delivery="+this.delivery+"start="+this.start+"count ="+count);
+        while (!this.plannedPeriod.equals(count)) {
+            if (!(this.delivery.getDayOfWeek().equals(DayOfWeek.SATURDAY)) && !(this.delivery.getDayOfWeek().equals(DayOfWeek.SUNDAY)))
+                count++;
+            this.delivery = this.delivery.plusDays(1);
+         //   System.out.println("delivery="+this.delivery+"start="+this.start+"count ="+count);
+        }
+        return this.delivery;
+    }
 
     //total eststimate
     public Integer Calculate_total_estimate() {
@@ -79,8 +98,8 @@ public class Sprint {
         double totalEstimate = Calculate_total_estimate();
         double remain = totalEstimate;
         for (int i = 0; i < plannedPeriod - 1; i++) {
-            remain -=plannedToday;
-                    planned_hours_remaining.set(i, remain);
+            remain -= plannedToday;
+            planned_hours_remaining.set(i, remain);
         }
         return planned_hours_remaining;
     }
