@@ -10,6 +10,7 @@ import se.BTH.ITProjectManagement.repositories.RoleRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service

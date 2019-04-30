@@ -15,7 +15,9 @@ import se.BTH.ITProjectManagement.repositories.TeamRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -54,16 +56,13 @@ public class TeamController {
     public String editTeam(@RequestParam(value = "id", required = true) String id, Model model) {
         log.debug("Request to open the edit team form page");
         Team team = repository.findById(id).get();
-        List<User> member_list = team.getUsers();
-        member_list.removeIf(u -> u.isActive() == false);
-        team.setUsers(member_list);
         model.addAttribute("teamAttr", team);
         return "teamform";
     }
 
     // Opening the edit team form page.
     @RequestMapping(value = "/sprintteam", method = RequestMethod.GET)
-    public String sprintteam(@RequestParam(value = "id", required = true) String id, Model model) {
+    public String sprintteam(@RequestParam(value = "sprintid", required = true) String id, Model model) {
         log.debug("Request to open the edit team form page");
         Team team;
         Sprint sprint = sprintRepository.findById(id).get();
@@ -72,10 +71,9 @@ public class TeamController {
             List<User> member_list = team.getUsers();
             member_list.removeIf(u -> u.isActive() == false);
             team.setUsers(member_list);
-        }
-        else team =Team.builder().active(true).users(new ArrayList<>()).build();
-                model.addAttribute("teamAttr", team);
-        model.addAttribute("sprintid", sprint.getId());
+        } else team = Team.builder().active(true).users(new ArrayList<>()).build();
+        model.addAttribute("teamAttr", team);
+        model.addAttribute("sprintid", id);
         return "sprintteamform";
     }
 
@@ -95,11 +93,14 @@ public class TeamController {
     public String addmember(@RequestParam(value = "id", required = true) String id, @RequestParam(value = "teamid", required = true) String teamid, Model model) {
         Team team = repository.findById(teamid).get();
         List<User> members = team.getUsers();
-        members.add(userRepository.findById(id).get());
-        team.setUsers(members);
+        User user = userRepository.findById(id).get();
+       if(!team.isMememberExcit(user)) {
+           team.getUsers().add(user);
+        team.setUsers(members);}
         repository.save(team);
         return "redirect:/api/team/edit?id=" + team.getId();
     }
+
     // Deleting the specified team.
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam(value = "id", required = true) String id, Model model) {
@@ -117,57 +118,11 @@ public class TeamController {
             Team team1 = Team.builder().name(team.getName()).active(true).users(users).build();
             repository.save(team1);
         } else {
-
+            List<User> members = team.getUsers();
+            members.removeIf(u -> u.isActive() == false);
+            team.setUsers(members);
             repository.save(team);
         }
         return "redirect:teams";
     }
 }
-/*
-@RestController
-@RequestMapping("/api")
-public class TeamController {
-    private final Logger log = LoggerFactory.getLogger(TeamController.class);
-
-    @Autowired
-    private TeamRepository teamRepository;
-
-    public TeamController(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
-    }
-
-    @GetMapping("/teams")
-    Collection<Team> teams() {
-        return teamRepository.findAll();
-    }
-
-    @GetMapping("/team/{id}")
-    ResponseEntity<?> getTeam(@PathVariable String id) {
-        Optional<Team> team = teamRepository.findById(id);
-        return team.map(response -> ResponseEntity.ok().body(response))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PostMapping(value = "/team", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Team> createTeam(@Valid @RequestBody Team team) throws URISyntaxException {
-        log.info("Request to create team: {}", team);
-        Team result = teamRepository.save(team);
-        return ResponseEntity.created(new URI("/api/team/" + result.getId())).body(result);
-    }
-
-    @PutMapping("/team")
-    ResponseEntity<Team> updateTeam(@Valid @RequestBody Team team) {
-        log.info("Request to update team: {}", team);
-        Team result = teamRepository.save(team);
-        return ResponseEntity.ok().body(result);
-    }
-
-    @DeleteMapping("/team/{id}")
-    public ResponseEntity<?> deleteTeam(@PathVariable String id) {
-        log.info("Request to delete team: {}", id);
-        teamRepository.deleteById(id);
-        return ResponseEntity.ok().build();
-    }
-
-}
-*/

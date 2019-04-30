@@ -53,7 +53,7 @@ public class SubTaskController {
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String editSubTask(@RequestParam(value="id", required=true) String id, Model model) {
         log.debug("Request to open the edit subtask form page");
-        model.addAttribute("subtaskAttr", repository.findById(id));
+        model.addAttribute("subtaskAttr", repository.findById(id).get());
         return "subtaskform";
     }
 

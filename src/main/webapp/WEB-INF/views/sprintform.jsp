@@ -55,13 +55,12 @@
                 <form:option value="FRIDAY" label="FRIDAY"/>
                 </form:select>
         <label for="sprint_name">Enter Daily meeting: </label>
-        <form:input id="sprint_name" cssClass="form-control" path="daily_meeting" />
-        <label for="sprint_name">Enter team </label>
-                <form:input id="sprint_name" cssClass="form-control" path="team" />
+        <form:input id="sprint_name"  cssClass="form-control" path="daily_meeting" />
+        <form:hidden path="tasks" />
         <div>&nbsp;</div>
         <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
-        <c:url var="sprintteamUrl" value="/api/team/sprintteam?id=${sprintAttr.id}" /><a id="view" href="${sprintteamUrl}" class="btn btn-info">Sprint team</a>
-        <c:url var="sprinttaskUrl" value="/api/task/tasks?id=${sprintAttr.id}" /><a id="cancel" href="${sprinttaskUrl}" class="btn btn-info">Sprint tasks</a>
+        <c:url var="sprintteamUrl" value="/api/team/sprintteam?sprintid=${sprintAttr.id}" /><a id="view" href="${sprintteamUrl}" class="btn btn-info">Sprint team</a>
+        <c:url var="sprinttaskUrl" value="/api/task/tasks?sprintid=${sprintAttr.id}" /><a id="viewtask" href="${sprinttaskUrl}" class="btn btn-warning">Sprint tasks</a>
         <c:url var="CancelUrl" value="/api/sprint/sprints" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">Cancel</a>
 
 

@@ -22,10 +22,19 @@ public class Team {
     private String id;
     private String name;
     private boolean active;
-     List<User> users;
+    List<User> users;
 
     public boolean changeActive() {
         return active = !active;
+    }
+
+    public boolean isMememberExcit(User user) {
+        for (User u : this.getUsers()) {
+            if (user.getId().equals(u.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

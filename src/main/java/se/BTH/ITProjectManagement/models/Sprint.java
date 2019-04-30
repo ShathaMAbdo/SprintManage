@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -36,10 +38,19 @@ public class Sprint {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate demo;
     private DayOfWeek review;
+    @DateTimeFormat(pattern = "hh:mm a")
     private LocalTime daily_meeting;
-    private Set<Task> tasks;
+    private List<Task> tasks;
     private Integer plannedPeriod; // how many days will sprint take
 
+    public int findTaskIndex(Task task){
+        int index=-1;
+        for (Task temp:this.tasks) {
+            index++;
+            if (temp.getId().equals(task.getId()))
+                return index;
+        }return index;
+    }
     public LocalDate calcDelivery() {
         int count = 0;
         this.delivery = this.start.minusDays(1);

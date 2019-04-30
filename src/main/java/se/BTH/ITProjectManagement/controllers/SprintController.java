@@ -55,7 +55,7 @@ public class SprintController {
 
     // Opening the edit sprint form page.
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String editSprint(@RequestParam(value = "id", required = true) String id, Model model) {
+    public String editSprint(@RequestParam(value = "sprintid", required = true) String id, Model model) {
         log.debug("Request to open the edit Sprint form page");
         model.addAttribute("sprintAttr", repository.findById(id).get());
         return "sprintform";
@@ -72,8 +72,10 @@ public class SprintController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("sprintAttr") Sprint sprint) {
         Sprint sprint1;
-        if (!sprint.getId().equals(""))
+        if (!sprint.getId().equals("")){
+            sprint.calcDelivery();
             repository.save(sprint);
+        }
         else {
             if (sprint.getTeam() == null) {
                 sprint1 = Sprint.builder().name(sprint.getName()).daily_meeting(sprint.getDaily_meeting()).
@@ -83,7 +85,8 @@ public class SprintController {
                     start(sprint.getStart()).demo(sprint.getDemo()).goal(sprint.getGoal()).plannedPeriod(sprint.getPlannedPeriod())
                     .retrospective(sprint.getRetrospective()).review(sprint.getReview()).team(sprint.getTeam()).tasks(sprint.getTasks()).build();
             }
-                sprint1.calcDelivery();
+
+            sprint1.calcDelivery();
             repository.save(sprint1);
         }
         return "redirect:sprints";
@@ -100,11 +103,11 @@ public class SprintController {
     }
 
     @RequestMapping(value = "/addteam", method = RequestMethod.GET)
-    public String addTeamToSprint(@RequestParam(value = "id", required = true) String sprintid,@RequestParam(value ="teamid", required = true) String teamid, Model model) {
+    public String addTeamToSprint(@RequestParam(value = "sprintid", required = true) String sprintid,@RequestParam(value ="teamid", required = true) String teamid, Model model) {
         Sprint sprint = repository.findById(sprintid).get();
         sprint.setTeam(teamRepository.findById(teamid).get());
         repository.save(sprint);
-        return "redirect:/api/sprint/edit?id=" + sprint.getId();
+        return "redirect:/api/sprint/edit?sprintid=" +sprintid;
     }
 
 

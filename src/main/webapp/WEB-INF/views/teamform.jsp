@@ -41,13 +41,14 @@
                         <form:option value="true" label="true"/>
                         <form:option value="false" label="false"/>
                         </form:select>
+                <div>&nbsp;</div>
                 <label for="team_name">Team members: </label>
                 <div>&nbsp;</div>
 	            <table id="users_table" class="table">
             	        	<thead>
             	            	<tr align="center">
             	            		<th>Name</th>
-            	                    <th>Select for remove<th>
+            	                    <th>Member in team<th>
             	            		<th colspan="2"></th>
             	            	</tr>
             	        	</thead>
