@@ -1,27 +1,20 @@
 package se.BTH.ITProjectManagement.controllers;
 
 import org.apache.log4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import se.BTH.ITProjectManagement.models.Sprint;
 import se.BTH.ITProjectManagement.models.SubTask;
 import se.BTH.ITProjectManagement.models.Task;
 import se.BTH.ITProjectManagement.models.TaskStatus;
+import se.BTH.ITProjectManagement.repositories.SprintRepository;
 import se.BTH.ITProjectManagement.repositories.SubTaskRepository;
 import se.BTH.ITProjectManagement.repositories.TaskRepository;
 
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/api/subtask")
@@ -31,6 +24,11 @@ public class SubTaskController {
 
     @Autowired
     private SubTaskRepository repository;
+    @Autowired
+    private TaskRepository taskRepo;
+    @Autowired
+    private SprintRepository sprintRepo;
+
 
     // Displaying the initial subtasks list.
     @RequestMapping(value = "/subtasks", method = RequestMethod.GET)
@@ -51,9 +49,13 @@ public class SubTaskController {
 
     // Opening the edit subtask form page.
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String editSubTask(@RequestParam(value="id", required=true) String id, Model model) {
+    public String editSubTask(@RequestParam(value="id", required=true) String id,@RequestParam(value="taskid", required=true) String taskid,
+                              @RequestParam(value="sprintid", required=true) String sprintid,Model model) {
         log.debug("Request to open the edit subtask form page");
         model.addAttribute("subtaskAttr", repository.findById(id).get());
+        model.addAttribute("taskid", taskid);
+        model.addAttribute("sprintid", sprintid);
+
         return "subtaskform";
     }
 

@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>Task</title>
+		<title>Sub Task</title>
 	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 	</head>
@@ -26,17 +26,17 @@
              </div>
 
 		<div class="container">
-			<h2 id="article_header" class="text-warning" align="center">Sprint tasks</h2>
+			<h2 id="article_header" class="text-warning" align="center">Sub tasks</h2>
 	    	<div>&nbsp;</div>
 
-	    	<!-- Div to add a new task to the mongo database -->
-	    	<div id="add_new_task">
-	    			<c:url var="addUrl" value="/api/task/add?sprintid=${sprintid}" /><a id="add" href="${addUrl}" class="btn btn-success">Add task</a>
+	    	<!-- Div to add a new sub task to the mongo database -->
+	    	<div id="add_new_subtask">
+	    			<c:url var="addUrl" value="/api/subtask/add?sprintid=${sprintid}" /><a id="add" href="${addUrl}" class="btn btn-success">Add subtask</a>
 	    	</div>
 	    	<div>&nbsp;</div>
 
-	    	<!-- Table to display the task list from the mongo database -->
-	    	<table id="tasks_table" class="table">
+	    	<!-- Table to display the sub task list from the mongo database -->
+	    	<table id="subtasks_table" class="table">
 	        	<thead>
 	            	<tr align="center">
 	            		<th>priority</th>
@@ -47,19 +47,19 @@
 	            	</tr>
 	        	</thead>
 	        	<tbody>
-	            	<c:forEach items="${tasks}" var="task">
+	            	<c:forEach items="${subtasks}" var="subtask">
 	                	<tr align="left">
 	                	     <form:hidden path="id" />
-	                    	<td><c:out value="${task.priority}" /></td>
-	                    	<td><c:out value="${task.name}" /></td>
-	                    	<td><c:out value="${task.storyPoints}" /></td>
+	                    	<td><c:out value="${subtask.priority}" /></td>
+	                    	<td><c:out value="${subtask.name}" /></td>
+	                    	<td><c:out value="${subtask.storyPoints}" /></td>
 
 
 	                    	<td>
-	                        	<c:url var="editUrl" value="/api/task/edit?id=${task.id}&sprintid=${sprintid}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
+	                        	<c:url var="editUrl" value="/api/subtask/edit?id=${subtask.id}&sprintid=${sprintid}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
 	                    	</td>
 	                    	<td>
-	                        	<c:url var="deleteUrl" value="/api/task/delete?id=${task.id}&sprintid=${sprintid}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Delete</a>
+	                        	<c:url var="deleteUrl" value="/api/subtask/delete?id=${subtask.id}&sprintid=${sprintid}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Delete</a>
 	                    	</td>
 
 	                	</tr>

@@ -39,31 +39,34 @@
 	            <label for="task_name">Enter StoryPoints: </label>
                 <form:input id="task_name" cssClass="form-control" path="storyPoints" />
 	            <div>&nbsp;</div>
-	             <label for="task_name">Team members: </label>
-                                <div>&nbsp;</div>
-                	            <table id="subtasks_table" class="table">
-                            	        	<thead>
-                            	            	<tr align="center">
-                            	            	<th>Name</th>
-                                                    <th>status</th>
-                                                    <th>OEstimate</th>
-                            	            		<th colspan="3"></th>
-                            	            	</tr>
-                            	        	</thead>
-                            	        	<tbody>
-                            	            	<c:forEach items="${taskAttr.subTasks}" varStatus="st" var="subTask"   >
-                            	                	<tr align="left">
-                            	                	    <td><form:input path="subTasks[${st.index}].name" value="${subTask.name}"/></td>
-                                                        <td><form:input path="subTasks[${st.index}].status"  value="${subTask.status}"/></td>
-                            	                    	<td><form:input path="subTasks[${st.index}].OEstimate"  value="${subTask.OEstimate}"/></td>
-                            	                    	<td><form:input type="hidden" path="subTasks[${st.index}].id" value="${subTask.id}" /></td>
-                            	                    	<td><form:input type="hidden" path="subTasks[${st.index}].actualHours" value="${subTask.actualHours}" /></td>
-                            	                    	<td><form:input type="hidden" path="subTasks[${st.index}].users" value="${subTask.users}" /></td>
+	             <label for="task_name">Sub Tasks : </label>
 
-                            	                	</tr>
-                            	            	</c:forEach>
-                            	        	</tbody>
-                            	 </table>
+                	  <table id="subtasks_table" class="table">
+                       <thead>
+                        <tr align="center">
+                        <th>Sub Task Name</th>
+                         <th colspan="2"></th>
+                           </tr>
+                            </thead>
+                            	<tbody>
+                            	    <c:forEach items="${taskAttr.subTasks}" varStatus="st" var="subTask"   >
+                            	        <tr align="left">
+                            	            <td><form:input path="subTasks[${st.index}].name" cssClass="form-control" value="${subTask.name}"/></td>
+                                            <td><form:input type="hidden" path="subTasks[${st.index}].status"  value="${subTask.status}"/></td>
+                            	            <td><form:input type="hidden" path="subTasks[${st.index}].OEstimate"  value="${subTask.OEstimate}"/></td>
+                            	            <td><form:input type="hidden" path="subTasks[${st.index}].id" value="${subTask.id}" /></td>
+                            	            <td><form:input type="hidden" path="subTasks[${st.index}].actualHours" value="${subTask.actualHours}" /></td>
+                            	            <td><form:input type="hidden" path="subTasks[${st.index}].users" value="${subTask.users}" /></td>
+                            	            <td>
+                                                <c:url var="editUrl" value="/api/subtask/edit?id=${subTask.id}&taskid=${taskAttr.id}&sprintid=${sprintid}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
+                                            </td>
+                                            <td>
+                                                <c:url var="deleteUrl" value="/api/subtask/delete?subid=${subtask.id}&id=${task.id}&sprintid=${sprintid}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Delete</a>
+                                            </td>
+                                         </tr>
+                            	    </c:forEach>
+                            	</tbody>
+                      </table>
 	            <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
 	            <c:url var="addUrl" value="/api/task/subtasks?id=${taskAttr.id}&sprintid=${sprintid}" /><a id="add" href="${addUrl}" class="btn btn-info">Add subTask</a>
                 <c:url var="CancelUrl" value="/api/task/tasks?sprintid=${sprintid}" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">Cancel</a>
