@@ -29,42 +29,51 @@
 	        <div>&nbsp;</div>
 
 			<!-- Sub Task input form to add a new subtask or update the existing subtask-->
-	        <c:url var="saveUrl" value="/api/subtask/save?sprintid=${sprintid}" />
+	        <c:url var="saveUrl" value="/api/subtask/save?taskid=${taskid}&sprintid=${sprintid}" />
 	        <form:form id="subtask_form" modelAttribute="subtaskAttr" method="POST" action="${saveUrl}">
 	        	<form:hidden path="id" />
 	            <label for="subtask_name">Enter Name: </label>
 	            <form:input id="subtask_name" cssClass="form-control" path="name" />
 	           	<label for="subtask_name">Enter status: </label>
-                <form:input id="subtask_name" cssClass="form-control" path="status" />
+                <form:select id="subtask_name" cssClass="form-control" path="status">
+                        <form:option value="PLANNED" label="PLANNED"/>
+                        <form:option value="ONGOING" label="ONGOING"/>
+                        <form:option value="REVIEW" label="REVIEW"/>
+                        <form:option value="DISCARDED" label="DISCARDED"/>
+                        <form:option value="DONE" label="DONE"/>
+                        </form:select>
 	            <label for="subtask_name">Enter OEstimate: </label>
-                <form:input id="subtask_name" cssClass="form-control" path="OEstimate" />
+                <form:input id="subtask_name" type="number" cssClass="form-control" path="OEstimate" />
 	            <div>&nbsp;</div>
 	             <label for="subtask_name">Assigned to: </label>
-                	            <table id="users_table" class="table">
-                            	        	<thead>
-                            	            	<tr align="center">
-                            	            	  <th>Name</th>
-                            	            		<th colspan="2"></th>
-                            	            	</tr>
-                            	        	</thead>
-                            	        	<tbody>
-                            	            	<c:forEach items="${subtaskAttr.users}" varStatus="st" var="user"   >
-                            	                	<tr align="left">
-                            	                	    <td><form:input path="users[${st.index}].name" cssClass="form-control" value="${user.name}"/></td>
-                            	                	    <td><form:input type="hidden" path="users[${st.index}].email"  value="${user.email}"/></td>
-                                                        <td><form:input type="hidden" path="users[${st.index}].phone"  value="${user.phone}"/></td>
-                            	                    	<td><form:input type="hidden" path="users[${st.index}].city"  value="${user.city}"/></td>
-                            	                    	<td><form:input type="hidden" path="users[${st.index}].roles"  value="${user.roles}"/></td>
-                            	                    	<td><form:input type="hidden" path="users[${st.index}].active"  value="${user.active}"/></td>
-                            	                    	<td><form:input type="hidden" path="users[${st.index}].id" value="${user.id}" /></td>
-                            	                    	<td><form:input type="hidden" path="users[${st.index}].username"  value="${user.username}"/></td>
-                            	                    	<td><form:input type="hidden" path="users[${st.index}].password"  value="${user.password}"/></td>
-                            	                    	<td><form:input type="hidden" path="users[${st.index}].passwordConfirm"  value="${user.passwordConfirm}"/></td>
-
-                            	                   	</tr>
-                            	            	</c:forEach>
-                            	        	</tbody>
-                            	 </table>
+                	  <table id="users_table" class="table">
+                           <thead>
+                            	<tr align="center">
+                            	  <th>Name</th>
+                            	  <th colspan="2"></th>
+                            	</tr>
+                           </thead>
+                           <tbody>
+                            	<c:forEach items="${subtaskAttr.users}" varStatus="st" var="user"   >
+                            	    <tr align="left">
+                            	      <td><form:input path="users[${st.index}].name" cssClass="form-control" value="${user.name}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].email"  value="${user.email}"/></td>
+                                      <td><form:input type="hidden" path="users[${st.index}].phone"  value="${user.phone}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].city"  value="${user.city}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].roles"  value="${user.roles}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].active"  value="${user.active}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].id" value="${user.id}" /></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].username"  value="${user.username}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].password"  value="${user.password}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].passwordConfirm"  value="${user.passwordConfirm}"/></td>
+                                      <td>
+                                          <c:url var="deleteUrl" value="/api/subtask/deletemember?userid=${user.id}&id=${subtask.id}&taskid=${taskAttr.id}&sprintid=${sprintid}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Remove</a>
+                                      </td>
+                            	    </tr>
+                            	</c:forEach>
+                           </tbody>
+                      </table>
+                    <c:url var="AdduserUrl" value="/api/subtask/selectmember?id=${subtask.id}&taskid=${taskid}&sprintid=${sprintid}" /><a id="adduser" href="${AdduserUrl}" class="btn btn-success">Add member of team</a>
                  <div>&nbsp;</div>
                  <label for="subtask_name">Actual Hours: </label>
                       <table id="actualHours_table" class="table">
@@ -79,13 +88,13 @@
                                <c:forEach items="${subtaskAttr.actualHours}" varStatus="st" var="actualHour"   >
                                   <tr align="left">
                                      <td>Day ${st.index+1}</td>
-                                     <td><form:input path="actualHours[${st.index}]" cssClass="form-control" value="${actualHour}"/></td>
+                                     <td><form:input type="number" path="actualHours[${st.index}]" cssClass="form-control" value="${actualHour}"/></td>
                                     </tr>
                                </c:forEach>
                             </tbody>
                       </table>
 	            <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
-                <c:url var="CancelUrl" value="/api/task/edit?id=${taskid}&sprintid=${sprintid}" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">Cancel</a>
+                <c:url var="CancelUrl" value="/api/task/edit?taskid=${taskid}&sprintid=${sprintid}" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">Cancel</a>
 
 	        </form:form>
 	    </div>

@@ -9,9 +9,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class Initializer implements CommandLineRunner {
@@ -52,21 +50,28 @@ public class Initializer implements CommandLineRunner {
         List<User> users = new ArrayList<>();
         List<Integer> actualHours = new ArrayList<>();
         List<SubTask> subTasks = new ArrayList<>();
-        actualHours.add(0, 1);
-        actualHours.add(1, 0);
-        actualHours.add(2, 4);
-        actualHours.add(3, 1);
+
+        actualHours.add(1);
+        actualHours.add(0);
+        actualHours.add(4);
+        actualHours.add(1);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         User user = userrepo.findByUsername("Arti");
         users.add(user);
         SubTask subtask = SubTask.builder().name("Schema Registration").status(TaskStatus.DONE).users(users)
                 .OEstimate(8).actualHours(actualHours).build();
         subTasks.add(subtask);
-
         users = new ArrayList<>();
+        actualHours = new ArrayList<>();
         actualHours.add(0, 8);
         actualHours.add(1, 4);
         actualHours.add(2, 6);
         actualHours.add(3, 6);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Hossein");
         users.add(user);
         user = userrepo.findByUsername("Kevin");
@@ -74,12 +79,15 @@ public class Initializer implements CommandLineRunner {
         subtask = SubTask.builder().name("implement notification contxt and data").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(40).actualHours(actualHours).build();
         subTasks.add(subtask);
-
         users = new ArrayList<>();
-        actualHours.set(0, 8);
-        actualHours.set(1, 4);
-        actualHours.set(2, 6);
-        actualHours.set(1, 6);
+        actualHours = new ArrayList<>();
+        actualHours.add(0, 8);
+        actualHours.add(1, 4);
+        actualHours.add(2, 6);
+        actualHours.add(1, 6);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Hossein");
         users.add(user);
         subtask = SubTask.builder().name("New notification category").status(TaskStatus.REVIEW).users(users)
@@ -97,17 +105,23 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 1);
         actualHours.add(2, 0);
         actualHours.add(3, 2);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Emil");
         users.add(user);
         subtask = SubTask.builder().name("Test Analysis").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(24).actualHours(actualHours).build();
         subTasks.add(subtask);
-
+        actualHours = new ArrayList<>();
         users = new ArrayList<>();
         actualHours.add(0, 7);
         actualHours.add(1, 7);
         actualHours.add(2, 8);
         actualHours.add(3, 1);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Emil");
         users.add(user);
 
@@ -115,10 +129,14 @@ public class Initializer implements CommandLineRunner {
                 .OEstimate(40).actualHours(actualHours).build();
         subTasks.add(subtask);
         users = new ArrayList<>();
-        actualHours.set(0, 0);
-        actualHours.set(1, 0);
-        actualHours.set(2, 0);
-        actualHours.set(3, 2);
+        actualHours = new ArrayList<>();
+        actualHours.add(0, 0);
+        actualHours.add(1, 0);
+        actualHours.add(2, 0);
+        actualHours.add(3, 2);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Emil");
         users.add(user);
 
@@ -126,30 +144,42 @@ public class Initializer implements CommandLineRunner {
                 .OEstimate(40).actualHours(actualHours).build();
         subTasks.add(subtask);
         users = new ArrayList<>();
-        actualHours.set(0, 4);
-        actualHours.set(1, 0);
-        actualHours.set(2, 0);
-        actualHours.set(3, 0);
+        actualHours = new ArrayList<>();
+        actualHours.add(0, 4);
+        actualHours.add(1, 0);
+        actualHours.add(2, 0);
+        actualHours.add(3, 0);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Forhan");
         users.add(user);
         subtask = SubTask.builder().name("Jive Test").status(TaskStatus.PLANNED).users(users)
                 .OEstimate(64).actualHours(actualHours).build();
         subTasks.add(subtask);
         users = new ArrayList<>();
-        actualHours.set(0, 0);
-        actualHours.set(1, 0);
-        actualHours.set(2, 0);
-        actualHours.set(3, 1);
+        actualHours = new ArrayList<>();
+        actualHours.add(0, 0);
+        actualHours.add(1, 0);
+        actualHours.add(2, 0);
+        actualHours.add(3, 1);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Forhan");
         users.add(user);
         subtask = SubTask.builder().name("Jive Protocol").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(8).actualHours(actualHours).build();
         subTasks.add(subtask);
         users = new ArrayList<>();
-        actualHours.set(0, 2);
-        actualHours.set(1, 0);
-        actualHours.set(2, 12);
-        actualHours.set(3, 11);
+        actualHours = new ArrayList<>();
+        actualHours.add(0, 2);
+        actualHours.add(1, 0);
+        actualHours.add(2, 12);
+        actualHours.add(3, 11);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Simon");
         users.add(user);
         user = userrepo.findByUsername("Forhan");
@@ -169,17 +199,23 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 0);
         actualHours.add(2, 0);
         actualHours.add(3, 0);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Arti");
         users.add(user);
         subtask = SubTask.builder().name("BSUCstudy doc update").status(TaskStatus.ONGOING).users(users)
                 .OEstimate(16).actualHours(actualHours).build();
         subTasks.add(subtask);
-
         users = new ArrayList<>();
+        actualHours = new ArrayList<>();
         actualHours.add(0, 0);
         actualHours.add(1, 0);
         actualHours.add(2, 0);
         actualHours.add(3, 0);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Forhan");
         users.add(user);
 
@@ -187,10 +223,14 @@ public class Initializer implements CommandLineRunner {
                 .OEstimate(16).actualHours(actualHours).build();
         subTasks.add(subtask);
         users = new ArrayList<>();
-        actualHours.set(0, 0);
-        actualHours.set(1, 0);
-        actualHours.set(2, 0);
-        actualHours.set(3, 2);
+        actualHours = new ArrayList<>();
+        actualHours.add(0, 0);
+        actualHours.add(1, 0);
+        actualHours.add(2, 0);
+        actualHours.add(3, 2);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Emil");
         users.add(user);
 
@@ -211,6 +251,9 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 0);
         actualHours.add(2, 0);
         actualHours.add(3, 1);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Emil");
         users.add(user);
         subtask = SubTask.builder().name("New feature Control").status(TaskStatus.ONGOING).users(users)
@@ -229,6 +272,9 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(1, 0);
         actualHours.add(2, 6);
         actualHours.add(3, 6);
+        for (int i = 4; i <14 ; i++) {
+            actualHours.add(0);
+        }
         user = userrepo.findByUsername("Arti");
         users.add(user);
         user = userrepo.findByUsername("Hossein");

@@ -41,7 +41,7 @@
         <label for="sprint_name">Enter start day: </label>
         <form:input id="sprint_name" type="date" cssClass="form-control"  path="start" />
         <label for="sprint_name">Enter planned Period: </label>
-        <form:input id="sprint_name"  cssClass="form-control"  path="plannedPeriod" />
+        <form:input id="sprint_name" type="number" cssClass="form-control"  path="plannedPeriod" />
         <label for="sprint_name">Enter retrospective: </label>
         <form:input id="sprint_name" type="date" cssClass="form-control" path="retrospective" />
         <label for="sprint_name">Enter Demo: </label>

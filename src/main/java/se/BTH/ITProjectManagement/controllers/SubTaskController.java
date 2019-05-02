@@ -30,27 +30,30 @@ public class SubTaskController {
     private SprintRepository sprintRepo;
 
 
-    // Displaying the initial subtasks list.
-    @RequestMapping(value = "/subtasks", method = RequestMethod.GET)
-    public String getSubTasks(Model model) {
-        log.debug("Request to fetch all subtasks from the mongo database");
-        List<SubTask> subtask_list = repository.findAll();
-        model.addAttribute("subtasks", subtask_list);
-        return "subtask";
-    }
+//    // Displaying the initial subtasks list.
+//    @RequestMapping(value = "/subtasks", method = RequestMethod.GET)
+//    public String getSubTasks(Model model) {
+//        log.debug("Request to fetch all subtasks from the mongo database");
+//        List<SubTask> subtask_list = repository.findAll();
+//        model.addAttribute("subtasks", subtask_list);
+//        return "subtask";
+//    }
 
     // Opening the add new subtask form page.
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String addSubTask(Model model) {
+    public String addSubTask(@RequestParam(value = "taskid", required = true) String taskid,
+                             @RequestParam(value = "sprintid", required = true) String sprintid,Model model) {
         log.debug("Request to open the new subtask form page");
         model.addAttribute("subtaskAttr", SubTask.builder().OEstimate(0).build());
+        model.addAttribute("taskid", taskid);
+        model.addAttribute("sprintid", sprintid);
         return "subtaskform";
     }
 
     // Opening the edit subtask form page.
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String editSubTask(@RequestParam(value="id", required=true) String id,@RequestParam(value="taskid", required=true) String taskid,
-                              @RequestParam(value="sprintid", required=true) String sprintid,Model model) {
+    public String editSubTask(@RequestParam(value = "id", required = true) String id, @RequestParam(value = "taskid", required = true) String taskid,
+                              @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
         log.debug("Request to open the edit subtask form page");
         model.addAttribute("subtaskAttr", repository.findById(id).get());
         model.addAttribute("taskid", taskid);
@@ -61,23 +64,36 @@ public class SubTaskController {
 
     // Deleting the specified subtask.
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String delete(@RequestParam(value="id", required=true) String id, Model model) {
+    public String delete(@RequestParam(value = "id", required = true) String id, @RequestParam(value = "taskid", required = true) String taskid,
+                         @RequestParam(value = "sprintid", required = true) String sprintid ,Model model) {
         repository.deleteById(id);
         return "redirect:subtasks";
     }
 
     // Adding a new subtask or updating an existing subtask.
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(@ModelAttribute("subtaskAttr") SubTask subtask) {
-        if (subtask.getId()!="")
+    public String save(@ModelAttribute("subtaskAttr") SubTask subtask, @RequestParam(value = "taskid", required = true) String taskid,
+                       @RequestParam(value = "sprintid", required = true) String sprintid) {
+        Sprint sprint = sprintRepo.findById(sprintid).get();
+        int taskIndex = sprint.findTaskIndex(taskid);
+        Task task = sprint.getTasks().get(taskIndex);
+        if (!subtask.getId().equals("")) {
             repository.save(subtask);
-        else {
-            SubTask subtask1=SubTask.builder().name(subtask.getName()).actualHours(subtask.getActualHours()).OEstimate(subtask.getOEstimate())
+            int index=task.findSubTaskIndex(subtask.getId());
+            task.getSubTasks().remove(index);
+            task.getSubTasks().add(index,subtask);
+        } else {
+            List<Integer> actualHours = SubTask.intiActualHoursList(sprint.getPlannedPeriod());
+            SubTask subtask1 = SubTask.builder().name(subtask.getName()).actualHours(actualHours).OEstimate(subtask.getOEstimate())
                     .status(TaskStatus.PLANNED).users(subtask.getUsers()).build();
             repository.save(subtask1);
+            task.getSubTasks().add(subtask1);
         }
-
-        return "redirect:subtasks";
+        taskRepo.save(task);
+        sprint.getTasks().remove(taskIndex);
+        sprint.getTasks().add(taskIndex, task);
+        sprintRepo.save(sprint);
+        return "redirect:/api/task/edit?taskid="+taskid+"&sprintid="+sprintid;
     }
 }
 

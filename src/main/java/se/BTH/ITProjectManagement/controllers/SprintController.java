@@ -74,6 +74,7 @@ public class SprintController {
         Sprint sprint1;
         if (!sprint.getId().equals("")){
             sprint.calcDelivery();
+            sprint.setTeam( repository.findById(sprint.getId()).get().getTeam());
             repository.save(sprint);
         }
         else {

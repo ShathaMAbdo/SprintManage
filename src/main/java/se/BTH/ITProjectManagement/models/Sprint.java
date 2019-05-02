@@ -38,28 +38,30 @@ public class Sprint {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate demo;
     private DayOfWeek review;
-    @DateTimeFormat(pattern = "hh:mm a")
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime daily_meeting;
     private List<Task> tasks;
     private Integer plannedPeriod; // how many days will sprint take
 
-    public int findTaskIndex(Task task){
-        int index=-1;
-        for (Task temp:this.tasks) {
+    public int findTaskIndex(String taskid) {
+        int index = -1;
+        for (Task temp : this.tasks) {
             index++;
-            if (temp.getId().equals(task.getId()))
+            if (temp.getId().equals(taskid))
                 return index;
-        }return index;
+        }
+        return index;
     }
+
     public LocalDate calcDelivery() {
         int count = 0;
         this.delivery = this.start.minusDays(1);
-       // System.out.println("delivery="+this.delivery+"start="+this.start+"count ="+count);
+        // System.out.println("delivery="+this.delivery+"start="+this.start+"count ="+count);
         while (!this.plannedPeriod.equals(count)) {
             if (!(this.delivery.getDayOfWeek().equals(DayOfWeek.SATURDAY)) && !(this.delivery.getDayOfWeek().equals(DayOfWeek.SUNDAY)))
                 count++;
             this.delivery = this.delivery.plusDays(1);
-         //   System.out.println("delivery="+this.delivery+"start="+this.start+"count ="+count);
+            //   System.out.println("delivery="+this.delivery+"start="+this.start+"count ="+count);
         }
         return this.delivery;
     }
