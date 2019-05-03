@@ -58,7 +58,7 @@
                                                 <c:url var="editUrl" value="/api/subtask/edit?id=${subTask.id}&taskid=${taskAttr.id}&sprintid=${sprintid}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
                                             </td>
                                             <td>
-                                                <c:url var="deleteUrl" value="/api/subtask/delete?id=${subtask.id}&taskid=${taskAttr.id}&sprintid=${sprintid}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Delete</a>
+                                                <c:url var="deleteUrl" value="/api/subtask/delete?id=${subTask.id}&taskid=${taskAttr.id}&sprintid=${sprintid}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Delete</a>
                                             </td>
                                          </tr>
                             	    </c:forEach>

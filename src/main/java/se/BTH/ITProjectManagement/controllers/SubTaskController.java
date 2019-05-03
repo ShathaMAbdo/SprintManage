@@ -11,6 +11,7 @@ import se.BTH.ITProjectManagement.repositories.SubTaskRepository;
 import se.BTH.ITProjectManagement.repositories.TaskRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -45,7 +46,7 @@ public class SubTaskController {
     public String addSubTask(@RequestParam(value = "taskid", required = true) String taskid,
                              @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
         log.debug("Request to open the new subtask form page");
-        model.addAttribute("subtaskAttr", SubTask.builder().OEstimate(0).build());
+        model.addAttribute("subtaskAttr", SubTask.builder().OEstimate(0).users(new ArrayList<>()).build());
         model.addAttribute("taskid", taskid);
         model.addAttribute("sprintid", sprintid);
         return "subtaskform";
@@ -85,20 +86,23 @@ public class SubTaskController {
         Sprint sprint = sprintRepo.findById(sprintid).get();
         Task task = taskRepo.findById(taskid).get();
         SubTask subTask = repository.findById(subtaskid).get();
-        List<User>users=subTask.getUsers();
-        if (!users.contains(userRepo.findById(userid).get())){
-        users.add(userRepo.findById(userid).get());
-        subTask.setUsers(users);
-        repository.save(subTask);
-        int taskindex = sprint.findTaskIndex(taskid);
-        int subtaskindex = sprint.getTasks().get(taskindex).findSubTaskIndex(subtaskid);
-        task.getSubTasks().remove(subtaskindex);
-        task.getSubTasks().add(subtaskindex, subTask);
-        taskRepo.save(task);
-        sprint.getTasks().remove(taskindex);
-        sprint.getTasks().add(taskindex, task);
-        sprintRepo.save(sprint);}
+        List<User> users = subTask.getUsers();
+        if (users==null)
+            users=new ArrayList<>();
 
+        if (!users.contains(userRepo.findById(userid).get())) {
+            users.add(userRepo.findById(userid).get());
+            subTask.setUsers(users);
+            repository.save(subTask);
+            int taskindex = sprint.findTaskIndex(taskid);
+            int subtaskindex = sprint.getTasks().get(taskindex).findSubTaskIndex(subtaskid);
+            task.getSubTasks().remove(subtaskindex);
+            task.getSubTasks().add(subtaskindex, subTask);
+            taskRepo.save(task);
+            sprint.getTasks().remove(taskindex);
+            sprint.getTasks().add(taskindex, task);
+            sprintRepo.save(sprint);
+        }
 
         return "redirect:/api/subtask/edit?id=" + subtaskid + "&taskid=" + taskid + "&sprintid=" + sprintid;
     }
@@ -112,8 +116,8 @@ public class SubTaskController {
         Sprint sprint = sprintRepo.findById(sprintid).get();
         Task task = taskRepo.findById(taskid).get();
         SubTask subTask = repository.findById(subtaskid).get();
-        List<User> users=subTask.getUsers();
-        int index= IntStream.range(0,users.size()).filter(i->users.get(i).getId().equals(userid)).findFirst().getAsInt();
+        List<User> users = subTask.getUsers();
+        int index = IntStream.range(0, users.size()).filter(i -> users.get(i).getId().equals(userid)).findFirst().getAsInt();
         users.remove(index);
         subTask.setUsers(users);
         repository.save(subTask);
@@ -132,8 +136,21 @@ public class SubTaskController {
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam(value = "id", required = true) String id, @RequestParam(value = "taskid", required = true) String taskid,
                          @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
+        Sprint sprint = sprintRepo.findById(sprintid).get();
+        List<Task> tasks = sprint.getTasks();
+        Task task = taskRepo.findById(taskid).get();
+        int taskindex = sprint.findTaskIndex(taskid);
+        int subtaskindex = task.findSubTaskIndex(id);
+        List<SubTask> subTasks = task.getSubTasks();
+        subTasks.remove(subtaskindex);
         repository.deleteById(id);
-        return "redirect:subtasks";
+        task.setSubTasks(subTasks);
+        taskRepo.save(task);
+        tasks.remove(taskindex);
+        tasks.add(taskindex, task);
+        sprint.setTasks(tasks);
+        sprintRepo.save(sprint);
+        return "redirect:/api/task/edit?taskid=" + taskid + "&sprintid=" + sprintid;
     }
 
     // Adding a new subtask or updating an existing subtask.
@@ -162,51 +179,3 @@ public class SubTaskController {
         return "redirect:/api/task/edit?taskid=" + taskid + "&sprintid=" + sprintid;
     }
 }
-
-/*
-@RestController
-@RequestMapping("/api")
-public class SubTaskController {
-    private final Logger log = LoggerFactory.getLogger(TaskController.class);
-
-    @Autowired
-    private SubTaskRepository repository;
-
-    public SubTaskController(SubTaskRepository repository) {
-        this.repository = repository;
-    }
-
-    @GetMapping("/subtasks")
-    Collection<SubTask> subtasks() {
-        return repository.findAll();
-    }
-
-    @GetMapping("/subtask/{id}")
-    ResponseEntity<?> getSubTask(@PathVariable String id) {
-        Optional<SubTask> subtask = repository.findById(id);
-        return subtask.map(response -> ResponseEntity.ok().body(response))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PostMapping(value = "/subtask", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<SubTask> createSubTask(@Valid @RequestBody SubTask subtask) throws URISyntaxException {
-        log.info("Request to create subtask: {}", subtask);
-        SubTask result = repository.save(subtask);
-        return ResponseEntity.created(new URI("/api/subtask/" + result.getId())).body(result);
-    }
-
-    @PutMapping("/Subtask")
-    ResponseEntity<SubTask> updateTask(@Valid @RequestBody SubTask subtask) {
-        log.info("Request to update subtask: {}", subtask);
-        SubTask result = repository.save(subtask);
-        return ResponseEntity.ok().body(result);
-    }
-
-    @DeleteMapping("/subtask/{id}")
-    public ResponseEntity<?> deleteSubTask(@PathVariable String id) {
-        log.info("Request to delete subtask: {}", id);
-        repository.deleteById(id);
-        return ResponseEntity.ok().build();
-    }
-}
-*/
