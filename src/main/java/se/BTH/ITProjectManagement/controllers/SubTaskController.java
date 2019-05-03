@@ -5,15 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import se.BTH.ITProjectManagement.models.Sprint;
-import se.BTH.ITProjectManagement.models.SubTask;
-import se.BTH.ITProjectManagement.models.Task;
-import se.BTH.ITProjectManagement.models.TaskStatus;
+import se.BTH.ITProjectManagement.models.*;
 import se.BTH.ITProjectManagement.repositories.SprintRepository;
 import se.BTH.ITProjectManagement.repositories.SubTaskRepository;
 import se.BTH.ITProjectManagement.repositories.TaskRepository;
+import se.BTH.ITProjectManagement.repositories.UserRepository;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 
 @Controller
@@ -28,6 +27,8 @@ public class SubTaskController {
     private TaskRepository taskRepo;
     @Autowired
     private SprintRepository sprintRepo;
+    @Autowired
+    private UserRepository userRepo;
 
 
 //    // Displaying the initial subtasks list.
@@ -42,7 +43,7 @@ public class SubTaskController {
     // Opening the add new subtask form page.
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addSubTask(@RequestParam(value = "taskid", required = true) String taskid,
-                             @RequestParam(value = "sprintid", required = true) String sprintid,Model model) {
+                             @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
         log.debug("Request to open the new subtask form page");
         model.addAttribute("subtaskAttr", SubTask.builder().OEstimate(0).build());
         model.addAttribute("taskid", taskid);
@@ -62,10 +63,75 @@ public class SubTaskController {
         return "subtaskform";
     }
 
+    // Opening the members of team to select member for assignment subtask form page.
+    @RequestMapping(value = "/selectmember", method = RequestMethod.GET)
+    public String selectmember(@RequestParam(value = "id", required = true) String id,
+                               @RequestParam(value = "taskid", required = true) String taskid,
+                               @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
+        log.debug("Request to open the members of team for add to customed subtask form page");
+        Team team = sprintRepo.findById(sprintid).get().getTeam();
+        model.addAttribute("teamAttr", team);
+        model.addAttribute("id", id);
+        model.addAttribute("taskid", taskid);
+        model.addAttribute("sprintid", sprintid);
+        return "subtaskteamform";
+    }
+
+    // Deleting the specified member from assignment of subtask.
+    @RequestMapping(value = "/addmember", method = RequestMethod.GET)
+    public String addmember(@RequestParam(value = "userid", required = true) String userid, @RequestParam(value = "id", required = true) String subtaskid,
+                            @RequestParam(value = "taskid", required = true) String taskid,
+                            @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
+        Sprint sprint = sprintRepo.findById(sprintid).get();
+        Task task = taskRepo.findById(taskid).get();
+        SubTask subTask = repository.findById(subtaskid).get();
+        List<User>users=subTask.getUsers();
+        if (!users.contains(userRepo.findById(userid).get())){
+        users.add(userRepo.findById(userid).get());
+        subTask.setUsers(users);
+        repository.save(subTask);
+        int taskindex = sprint.findTaskIndex(taskid);
+        int subtaskindex = sprint.getTasks().get(taskindex).findSubTaskIndex(subtaskid);
+        task.getSubTasks().remove(subtaskindex);
+        task.getSubTasks().add(subtaskindex, subTask);
+        taskRepo.save(task);
+        sprint.getTasks().remove(taskindex);
+        sprint.getTasks().add(taskindex, task);
+        sprintRepo.save(sprint);}
+
+
+        return "redirect:/api/subtask/edit?id=" + subtaskid + "&taskid=" + taskid + "&sprintid=" + sprintid;
+    }
+
+    // Deleting the specified member from assignment of subtask.
+    @RequestMapping(value = "/deletemember", method = RequestMethod.GET)
+    public String deletemember(@RequestParam(value = "userid", required = true) String userid, @RequestParam(value = "id", required = true) String subtaskid,
+                               @RequestParam(value = "taskid", required = true) String taskid,
+                               @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
+        // repository.deleteById(id);
+        Sprint sprint = sprintRepo.findById(sprintid).get();
+        Task task = taskRepo.findById(taskid).get();
+        SubTask subTask = repository.findById(subtaskid).get();
+        List<User> users=subTask.getUsers();
+        int index= IntStream.range(0,users.size()).filter(i->users.get(i).getId().equals(userid)).findFirst().getAsInt();
+        users.remove(index);
+        subTask.setUsers(users);
+        repository.save(subTask);
+        int taskindex = sprint.findTaskIndex(taskid);
+        int subtaskindex = sprint.getTasks().get(taskindex).findSubTaskIndex(subtaskid);
+        task.getSubTasks().remove(subtaskindex);
+        task.getSubTasks().add(subtaskindex, subTask);
+        taskRepo.save(task);
+        sprint.getTasks().remove(taskindex);
+        sprint.getTasks().add(taskindex, task);
+        sprintRepo.save(sprint);
+        return "redirect:/api/subtask/edit?id=" + subtaskid + "&taskid=" + taskid + "&sprintid=" + sprintid;
+    }
+
     // Deleting the specified subtask.
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam(value = "id", required = true) String id, @RequestParam(value = "taskid", required = true) String taskid,
-                         @RequestParam(value = "sprintid", required = true) String sprintid ,Model model) {
+                         @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
         repository.deleteById(id);
         return "redirect:subtasks";
     }
@@ -79,9 +145,9 @@ public class SubTaskController {
         Task task = sprint.getTasks().get(taskIndex);
         if (!subtask.getId().equals("")) {
             repository.save(subtask);
-            int index=task.findSubTaskIndex(subtask.getId());
+            int index = task.findSubTaskIndex(subtask.getId());
             task.getSubTasks().remove(index);
-            task.getSubTasks().add(index,subtask);
+            task.getSubTasks().add(index, subtask);
         } else {
             List<Integer> actualHours = SubTask.intiActualHoursList(sprint.getPlannedPeriod());
             SubTask subtask1 = SubTask.builder().name(subtask.getName()).actualHours(actualHours).OEstimate(subtask.getOEstimate())
@@ -93,7 +159,7 @@ public class SubTaskController {
         sprint.getTasks().remove(taskIndex);
         sprint.getTasks().add(taskIndex, task);
         sprintRepo.save(sprint);
-        return "redirect:/api/task/edit?taskid="+taskid+"&sprintid="+sprintid;
+        return "redirect:/api/task/edit?taskid=" + taskid + "&sprintid=" + sprintid;
     }
 }
 
