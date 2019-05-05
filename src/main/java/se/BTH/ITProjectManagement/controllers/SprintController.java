@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import se.BTH.ITProjectManagement.models.*;
 import se.BTH.ITProjectManagement.repositories.SprintRepository;
 import se.BTH.ITProjectManagement.repositories.TeamRepository;
+import se.BTH.ITProjectManagement.services.SprintService;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -27,6 +28,8 @@ public class SprintController {
 
     @Autowired
     private SprintRepository repository;
+    @Autowired
+    private SprintService sprintService;
 
     @Autowired
     private TeamRepository teamRepository;
@@ -111,11 +114,21 @@ public class SprintController {
         repository.save(sprint);
         return "redirect:/api/sprint/edit?sprintid=" +sprintid;
     }
-    @RequestMapping(value = "/canvasjschart", method = RequestMethod.GET)
-    public String canvasjschart(ModelMap modelMap) {
-        List<List<Map<Object, Object>>> canvasjsDataList =null;
-        modelMap.addAttribute("dataPointsList", canvasjsDataList);
-        return "chart";
+    @RequestMapping(value = "/sprintcharts", method = RequestMethod.GET)
+    public String sprintcharts(@RequestParam(value = "sprintid", required = true) String sprintid,ModelMap modelMap) {
+        modelMap.addAttribute("sprintid", sprintid);
+        return "sprintcharts";
     }
-
+    @RequestMapping(value = "/canvasjschart", method = RequestMethod.GET)
+    public String canvasjschart(@RequestParam(value = "sprintid", required = true) String sprintid,ModelMap modelMap) {
+        List<List<Map<Object, Object>>> canvasjsDataList =sprintService.getCanvasjsDataList(sprintid);
+        modelMap.addAttribute("dataPointsList", canvasjsDataList);
+        return "actualdonedaily";
+    }
+    @RequestMapping(value = "/canvasjschart1", method = RequestMethod.GET)
+    public String canvasjschart1(@RequestParam(value = "sprintid", required = true) String sprintid,ModelMap modelMap) {
+        List<List<Map<Object, Object>>> canvasjsDataList =sprintService.getCanvasjsDataList1(sprintid);
+        modelMap.addAttribute("dataPointsList", canvasjsDataList);
+        return "actualremaindaily";
+    }
 }

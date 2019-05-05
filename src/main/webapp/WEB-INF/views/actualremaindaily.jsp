@@ -1,3 +1,4 @@
+<!-- chart.jsp-->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -5,53 +6,82 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Todo charts</title>
 <script type="text/javascript">
 window.onload = function() {
 
-var dps = [[]];
+var dps = [[], []];
 var chart = new CanvasJS.Chart("chartContainer", {
-	theme: "light2", // "light1", "dark1", "dark2"
+	exportEnabled: true,
 	animationEnabled: true,
 	title: {
-		text: "Average Sea Temperature - Amsterdam"
+		text: "The work actually remaining & planned daily"
 	},
+	subtitles: [{
+		text: "Click Legend to Hide or Unhide Data Series"
+	}],
 	axisX: {
-		valueFormatString: "MMM"
+		title: "Dayes"
 	},
 	axisY: {
-		title: "Temperature (in °C)",
-		suffix: " °C"
+		title: "Time (in Hours)",
+		prefix: "h",
+		includeZero: false
+	},
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		itemclick: toggleDataSeries
 	},
 	data: [{
 		type: "line",
-		xValueType: "dateTime",
-		xValueFormatString: "MMM",
-		yValueFormatString: "#,##0 °C",
+		name: "planned",
+		showInLegend: true,
+		yValueFormatString: "h#,##0",
 		dataPoints: dps[0]
+	},
+	{
+		type: "line",
+		name: "actual",
+		showInLegend: true,
+		yValueFormatString: "h#,##0",
+		dataPoints: dps[1]
 	}]
 });
 
-var xValue;
 var yValue;
+var label;
 
 <c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">
 	<c:forEach items="${dataPoints}" var="dataPoint">
-		xValue = parseInt("${dataPoint.x}");
 		yValue = parseFloat("${dataPoint.y}");
+		label = "${dataPoint.label}";
 		dps[parseInt("${loop.index}")].push({
-			x : xValue,
-			y : yValue
+			label : label,
+			y : yValue,
 		});
 	</c:forEach>
 </c:forEach>
 
 chart.render();
 
+function toggleDataSeries(e) {
+	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else {
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
 }
 </script>
 </head>
 <body>
-	<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+	<div id="chartContainer" style="height: 600px; width: 100%;"></div>
 	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>

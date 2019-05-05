@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 @Component
 public class Initializer implements CommandLineRunner {
@@ -42,6 +44,27 @@ public class Initializer implements CommandLineRunner {
 //        sprintRepo.deleteAll();
 //        addPersons();
 //        addBacklog();
+//        statistics();
+    }
+
+    private void statistics() {
+        Sprint sprint=sprintRepo.findById("5ccc2eb9a44cee2fb80190b5").get();
+        List<Double> aD=sprint.Actual_hours_today_sum();
+        List<Double> aR=sprint.Calculate_actual_remaining();
+        List<Double> pR=sprint.Calculate_planned_remaining();
+        List<Double> pD=new ArrayList<>();
+        for (int i = 0; i <sprint.getPlannedPeriod() ; i++) {
+            pD.add(sprint.Calculate_Planned_hours_today());
+        }
+        System.out.println("estimated = "+sprint.Calculate_total_estimate());
+        aD.forEach(System.out::println);
+        System.out.println("--------------------------");
+        pD.forEach(System.out::println);
+        System.out.println("--------------------------");
+        aR.forEach(System.out::println);
+        System.out.println("--------------------------");
+
+        pR.forEach(System.out::println);
     }
 
     private void addBacklog() {
