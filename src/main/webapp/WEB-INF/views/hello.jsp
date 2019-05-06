@@ -51,7 +51,7 @@
 
             </div>
             <div class="row text-center">
-                      <img src="${pageContext.request.contextPath}/images/logo-sigma-technology.png"/>
+                      <img src="${pageContext.request.contextPath}/images/logo-sigma-technology.png" width="850" height="350"/>
 
             </div>
         </div>

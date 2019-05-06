@@ -26,18 +26,14 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/" th:href="@{/}">Home</a>
                     <ul class="nav navbar-nav">
+                        <li><a class="navbar-brand" href="/" th:href="@{/}">Home</a></li>
                         <li><a href="api/user/users" style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
                         <li><a href="api/team/teams" style="color:red;"th:href="@{/api/team/teams}">TEAMS</a></li>
                         <li><a href="api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
                         <li><a href="api/sprint/sprints" style="color:red;"th:href="@{api/sprint/sprints}">SPRINTS</a></li>
                         <li><a href="api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
-                        <li><a href="api/user/edit"style="color:red;" th:href="@{/api/user/edit}">Profile</a></li>
-
-                         <a style="color:black;" onclick="document.forms['logoutForm'].submit()">Logout</a>
                     </ul>
-
                 </div>
             </div>
         </nav>
@@ -51,18 +47,13 @@
 
             </div>
             <div class="row text-center">
-                <img src="${pageContext.request.contextPath}/images/logo-charts.png" width="800" height="400"/>
+                <img src="${pageContext.request.contextPath}/images/logo-charts.png" width="800" height="350"/>
             </div>
 
         </div>
 
 
-    <c:if test="${pageContext.request.userPrincipal.name != null}">
-        <form id="logoutForm" method="POST" action="${contextPath}/logout">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        </form>
-            <div>&nbsp;</div>
-    </c:if>
+
 
 </div>
 <!-- /container -->
