@@ -22,22 +22,23 @@
 </head>
 <body>
 <div class="container">
-  <div th:fragment="header">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <ul class="nav navbar-nav">
-                        <li><a class="navbar-brand" href="/" th:href="@{/}">Home</a></li>
-                        <li><a href="api/user/users" style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
-                        <li><a href="api/team/teams" style="color:red;"th:href="@{/api/team/teams}">TEAMS</a></li>
-                        <li><a href="api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
-                        <li><a href="api/sprint/sprints" style="color:red;"th:href="@{api/sprint/sprints}">SPRINTS</a></li>
-                        <li><a href="api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <ul class="nav navbar-nav">
+                            <li><a class="navbar-brand" href="/" th:href="@{/}">Home</a></li>
+                            <li><a href="/api/user/users"style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
+                            <li><a href="/api/team/teams" style="color:red;"th:href="@{api/team/teams}">TEAMS</a></li>
+                            <li><a href="/api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
+                            <li><a href="/api/sprint/sprints"style="color:red;" th:href="@{api/sprint/sprints}">SPRINTS</a></li>
+                            <li><a href="/api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                        </ul>
 
+                    </div>
+                </div>
+            </nav>
+     </div>
+<div class="container">
         <div class="jumbotron">
             <div class="row text-center">
                 <div class="">
@@ -52,7 +53,7 @@
 
         </div>
 
-
+  </div>
 
 
 </div>

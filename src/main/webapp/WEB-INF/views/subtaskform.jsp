@@ -57,14 +57,14 @@
                             	<c:forEach items="${subtaskAttr.users}" varStatus="st" var="user"   >
                             	    <tr align="left">
                             	      <td><form:input path="users[${st.index}].name" cssClass="form-control" value="${user.name}"/></td>
-                            	      <td><form:input type="hidden" path="users[${st.index}].email"  value="${user.email}"/></td>
-                                      <td><form:input type="hidden" path="users[${st.index}].phone"  value="${user.phone}"/></td>
-                            	      <td><form:input type="hidden" path="users[${st.index}].city"  value="${user.city}"/></td>
-                            	      <td><form:input type="hidden" path="users[${st.index}].roles"  value="${user.roles}"/></td>
-                            	      <td><form:input type="hidden" path="users[${st.index}].active"  value="${user.active}"/></td>
-                            	      <td><form:input type="hidden" path="users[${st.index}].id" value="${user.id}" /></td>
-                            	      <td><form:input type="hidden" path="users[${st.index}].username"  value="${user.username}"/></td>
-                            	      <td><form:input type="hidden" path="users[${st.index}].password"  value="${user.password}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].email"         value="${user.email}"/></td>
+                                      <td><form:input type="hidden" path="users[${st.index}].phone"            value="${user.phone}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].city"             value="${user.city}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].roles"            value="${user.roles}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].active"           value="${user.active}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].id"               value="${user.id}" /></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].username"         value="${user.username}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].password"         value="${user.password}"/></td>
                             	      <td><form:input type="hidden" path="users[${st.index}].passwordConfirm"  value="${user.passwordConfirm}"/></td>
                                       <td>
                                           <c:url var="deleteUrl" value="/api/subtask/deletemember?userid=${user.id}&id=${subtaskAttr.id}&taskid=${taskid}&sprintid=${sprintid}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Remove</a>
@@ -77,19 +77,16 @@
                  <div>&nbsp;</div>
                  <label for="subtask_name">Actual Hours: </label>
                       <table id="actualHours_table" class="table">
-                            <thead>
-                                <tr align="center">
-                                <th>Day</th>
-                                 <th>actualHours</th>
-                                 <th colspan="2"></th>
-                                </tr>
-                              </thead>
                             <tbody>
                                <c:forEach items="${subtaskAttr.actualHours}" varStatus="st" var="actualHour"   >
-                                  <tr align="left">
-                                     <td>Day ${st.index+1}</td>
-                                     <td><form:input type="number" path="actualHours[${st.index}]" cssClass="form-control" value="${actualHour}"/></td>
-                                    </tr>
+                                <td style="width: 50px;"> Day ${st.index+1}</td>
+                               </c:forEach>
+                            </tbody>
+                      </table>
+                      <table id="actualHours_table1" class="table">
+                            <tbody>
+                               <c:forEach items="${subtaskAttr.actualHours}" varStatus="st" var="actualHour"   >
+                               <td><form:input style="width: 50px;" type="number" path="actualHours[${st.index}]"  value="${actualHour}" /></td>
                                </c:forEach>
                             </tbody>
                       </table>

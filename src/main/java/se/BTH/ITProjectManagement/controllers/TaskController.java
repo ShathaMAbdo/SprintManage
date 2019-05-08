@@ -82,8 +82,9 @@ public class TaskController {
             repository.save(task);
             Sprint sprint = sprintRepo.findById(sprintid).get();
             List<Task> tasks = sprint.getTasks();
-            tasks.remove(sprint.findTaskIndex(task.getId()));
-            tasks.add(sprint.findTaskIndex(task.getId()), task);
+            int index=sprint.findTaskIndex(task.getId());
+            tasks.remove(index);
+            tasks.add(index, task);
             sprint.setTasks(tasks);
             sprintRepo.save(sprint);
         }  else {

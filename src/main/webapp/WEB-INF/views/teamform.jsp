@@ -33,7 +33,6 @@
 	        <c:url var="saveUrl" value="/api/team/save" />
 	        <form:form id="team_form" modelAttribute="teamAttr"  method="POST" action="${saveUrl}">
 	        	<form:hidden path="id"  />
-
 	            <label for="team_name">Enter Name: </label>
 	            <form:input id="team_name" cssClass="form-control" name="id" var="xx" path="name" />
 	            <label for="team_name">Team Activity: </label>
