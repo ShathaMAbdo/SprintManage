@@ -3,6 +3,7 @@ package se.BTH.ITProjectManagement.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.BTH.ITProjectManagement.models.Sprint;
+
 import se.BTH.ITProjectManagement.repositories.SprintRepository;
 
 import java.util.ArrayList;
@@ -72,4 +73,6 @@ public class SprintService {
         list.add(dataPoints2);
         return list;
     }
+
+
 }

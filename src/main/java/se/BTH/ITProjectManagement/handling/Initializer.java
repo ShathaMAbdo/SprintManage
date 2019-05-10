@@ -4,14 +4,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import se.BTH.ITProjectManagement.models.*;
 import se.BTH.ITProjectManagement.repositories.*;
+import se.BTH.ITProjectManagement.services.SprintService;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
+import java.util.Map;
 
 @Component
 public class Initializer implements CommandLineRunner {
@@ -22,30 +23,36 @@ public class Initializer implements CommandLineRunner {
     private final TaskRepository taskRepo;
     private final SubTaskRepository subTaskRepo;
     private final SprintRepository sprintRepo;
+    private final SprintService sprintService;
 
 
-    public Initializer(UserRepository repository, RoleRepository rolerepo, TeamRepository teamrepo, TaskRepository taskRepo, SubTaskRepository subTaskRepo, SprintRepository sprintRepo) {
+
+    public Initializer(UserRepository repository, RoleRepository rolerepo, TeamRepository teamrepo, TaskRepository taskRepo, SubTaskRepository subTaskRepo, SprintRepository sprintRepo, SprintService sprintService) {
         this.userrepo = repository;
         this.rolerepo = rolerepo;
         this.teamrepo = teamrepo;
         this.taskRepo = taskRepo;
         this.subTaskRepo = subTaskRepo;
         this.sprintRepo = sprintRepo;
+        this.sprintService = sprintService;
     }
 
 
     @Override
     public void run(String... strings) {
-//        teamrepo.deleteAll();
+        teamrepo.deleteAll();
 //        rolerepo.deleteAll();
-//        userrepo.deleteAll();
-//        taskRepo.deleteAll();
-//        subTaskRepo.deleteAll();
-//        sprintRepo.deleteAll();
-//        addPersons();
-//        addBacklog();
-//        statistics();
+////        userrepo.deleteAll();
+////        taskRepo.deleteAll();
+////        subTaskRepo.deleteAll();
+////        sprintRepo.deleteAll();
+////        addPersons();
+////        addBacklog();
+////        statistics();
+ //         printMap();
+
     }
+
 
     private void statistics() {
         Sprint sprint=sprintRepo.findById("5ccc2eb9a44cee2fb80190b5").get();
@@ -78,6 +85,7 @@ public class Initializer implements CommandLineRunner {
         actualHours.add(0);
         actualHours.add(4);
         actualHours.add(1);
+
         for (int i = 4; i <14 ; i++) {
             actualHours.add(0);
         }
@@ -85,6 +93,7 @@ public class Initializer implements CommandLineRunner {
         users.add(user);
         SubTask subtask = SubTask.builder().name("Schema Registration").status(TaskStatus.DONE).users(users)
                 .OEstimate(8).actualHours(actualHours).build();
+        subtask.getActualHours().forEach(System.out::println);
         subTasks.add(subtask);
         users = new ArrayList<>();
         actualHours = new ArrayList<>();

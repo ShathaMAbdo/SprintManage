@@ -54,7 +54,6 @@
 	                    	<td><c:out value="${subtask.name}" /></td>
 	                    	<td><c:out value="${subtask.storyPoints}" /></td>
 
-
 	                    	<td>
 	                        	<c:url var="editUrl" value="/api/subtask/edit?id=${subtask.id}&sprintid=${sprintid}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
 	                    	</td>

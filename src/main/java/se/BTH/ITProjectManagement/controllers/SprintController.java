@@ -1,12 +1,10 @@
 package se.BTH.ITProjectManagement.controllers;
 
 import org.apache.log4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,9 +14,6 @@ import se.BTH.ITProjectManagement.repositories.SprintRepository;
 import se.BTH.ITProjectManagement.repositories.TeamRepository;
 import se.BTH.ITProjectManagement.services.SprintService;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 
 @Controller
@@ -65,13 +60,12 @@ public class SprintController {
         return "sprintform";
     }
 
-    // Opening the edit sprint form page.
+
+    // view actualHours
     @RequestMapping(value = "/actualHours", method = RequestMethod.GET)
     public String editActualHours(@RequestParam(value = "sprintid", required = true) String id, Model model) {
-        log.debug("Request to open the edit Sprint form page");
-          model.addAttribute("sprintAttr", repository.findById(id).get());
-        // model.addAttribute("taskAttr", repository.findById(id).get().getTasks().get(0));
-
+        log.debug("Request to open the edit actualHours form page");
+        model.addAttribute("sprintAttr", repository.findById(id).get());
         return "actualHours";
     }
 
@@ -86,19 +80,19 @@ public class SprintController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("sprintAttr") Sprint sprint) {
         Sprint sprint1;
-        if (!sprint.getId().equals("")){
+        if (!sprint.getId().equals("")) {
             sprint.calcDelivery();
-            sprint.setTeam( repository.findById(sprint.getId()).get().getTeam());
+            sprint.setTeam(repository.findById(sprint.getId()).get().getTeam());
             repository.save(sprint);
-        }
-        else {
+        } else {
             if (sprint.getTeam() == null) {
                 sprint1 = Sprint.builder().name(sprint.getName()).daily_meeting(sprint.getDaily_meeting()).
                         start(sprint.getStart()).demo(sprint.getDemo()).goal(sprint.getGoal()).plannedPeriod(sprint.getPlannedPeriod())
                         .retrospective(sprint.getRetrospective()).review(sprint.getReview()).tasks(sprint.getTasks()).build();
-            } else{ sprint1 = Sprint.builder().name(sprint.getName()).daily_meeting(sprint.getDaily_meeting()).
-                    start(sprint.getStart()).demo(sprint.getDemo()).goal(sprint.getGoal()).plannedPeriod(sprint.getPlannedPeriod())
-                    .retrospective(sprint.getRetrospective()).review(sprint.getReview()).team(sprint.getTeam()).tasks(sprint.getTasks()).build();
+            } else {
+                sprint1 = Sprint.builder().name(sprint.getName()).daily_meeting(sprint.getDaily_meeting()).
+                        start(sprint.getStart()).demo(sprint.getDemo()).goal(sprint.getGoal()).plannedPeriod(sprint.getPlannedPeriod())
+                        .retrospective(sprint.getRetrospective()).review(sprint.getReview()).team(sprint.getTeam()).tasks(sprint.getTasks()).build();
             }
 
             sprint1.calcDelivery();
@@ -110,34 +104,37 @@ public class SprintController {
 
     //Select one team from teams
     @RequestMapping(value = "/teams", method = RequestMethod.GET)
-    public String viewTeamsToSelect(@RequestParam(value = "id", required = true) String id,Model model) {
+    public String viewTeamsToSelect(@RequestParam(value = "id", required = true) String id, Model model) {
         log.debug("Request to fetch all teams from the db for custom team and select team");
         model.addAttribute("teams", teamRepository.findAll());
-        model.addAttribute("sprintid",id);
+        model.addAttribute("sprintid", id);
         return "sprintteam";
     }
 
     @RequestMapping(value = "/addteam", method = RequestMethod.GET)
-    public String addTeamToSprint(@RequestParam(value = "sprintid", required = true) String sprintid,@RequestParam(value ="teamid", required = true) String teamid, Model model) {
+    public String addTeamToSprint(@RequestParam(value = "sprintid", required = true) String sprintid, @RequestParam(value = "teamid", required = true) String teamid, Model model) {
         Sprint sprint = repository.findById(sprintid).get();
         sprint.setTeam(teamRepository.findById(teamid).get());
         repository.save(sprint);
-        return "redirect:/api/sprint/edit?sprintid=" +sprintid;
+        return "redirect:/api/sprint/edit?sprintid=" + sprintid;
     }
+
     @RequestMapping(value = "/sprintcharts", method = RequestMethod.GET)
-    public String sprintcharts(@RequestParam(value = "sprintid", required = true) String sprintid,ModelMap modelMap) {
+    public String sprintcharts(@RequestParam(value = "sprintid", required = true) String sprintid, ModelMap modelMap) {
         modelMap.addAttribute("sprintid", sprintid);
         return "sprintcharts";
     }
+
     @RequestMapping(value = "/canvasjschart", method = RequestMethod.GET)
-    public String canvasjschart(@RequestParam(value = "sprintid", required = true) String sprintid,ModelMap modelMap) {
-        List<List<Map<Object, Object>>> canvasjsDataList =sprintService.getCanvasjsDataList(sprintid);
+    public String canvasjschart(@RequestParam(value = "sprintid", required = true) String sprintid, ModelMap modelMap) {
+        List<List<Map<Object, Object>>> canvasjsDataList = sprintService.getCanvasjsDataList(sprintid);
         modelMap.addAttribute("dataPointsList", canvasjsDataList);
         return "actualdonedaily";
     }
+
     @RequestMapping(value = "/canvasjschart1", method = RequestMethod.GET)
-    public String canvasjschart1(@RequestParam(value = "sprintid", required = true) String sprintid,ModelMap modelMap) {
-        List<List<Map<Object, Object>>> canvasjsDataList =sprintService.getCanvasjsDataList1(sprintid);
+    public String canvasjschart1(@RequestParam(value = "sprintid", required = true) String sprintid, ModelMap modelMap) {
+        List<List<Map<Object, Object>>> canvasjsDataList = sprintService.getCanvasjsDataList1(sprintid);
         modelMap.addAttribute("dataPointsList", canvasjsDataList);
         return "actualremaindaily";
     }

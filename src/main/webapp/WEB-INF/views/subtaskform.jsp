@@ -86,7 +86,11 @@
                       <table id="actualHours_table1" class="table">
                             <tbody>
                                <c:forEach items="${subtaskAttr.actualHours}" varStatus="st" var="actualHour"   >
-                               <td><form:input style="width: 50px;" type="number" path="actualHours[${st.index}]"  value="${actualHour}" /></td>
+                               <td><form:input style="width: 50px;"
+                               type="number"
+                               path="actualHours[${st.index}]"
+                               value="${actualHour}" />
+                               </td>
                                </c:forEach>
                             </tbody>
                       </table>
