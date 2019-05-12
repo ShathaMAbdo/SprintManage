@@ -41,15 +41,15 @@ public class Initializer implements CommandLineRunner {
     @Override
     public void run(String... strings) {
         teamrepo.deleteAll();
-//        rolerepo.deleteAll();
-////        userrepo.deleteAll();
-////        taskRepo.deleteAll();
-////        subTaskRepo.deleteAll();
-////        sprintRepo.deleteAll();
-////        addPersons();
-////        addBacklog();
-////        statistics();
- //         printMap();
+        rolerepo.deleteAll();
+        userrepo.deleteAll();
+        taskRepo.deleteAll();
+        subTaskRepo.deleteAll();
+        sprintRepo.deleteAll();
+        addPersons();
+        addBacklog();
+       // statistics();
+
 
     }
 

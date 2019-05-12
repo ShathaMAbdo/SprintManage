@@ -23,6 +23,7 @@ public class Task {
     private Integer priority;
     private Integer storyPoints;
     List<SubTask> subTasks;
+
     public int findSubTaskIndex(String subtaskid) {
         int index = -1;
         for (SubTask temp : this.subTasks) {
@@ -32,6 +33,7 @@ public class Task {
         }
         return index;
     }
+
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();

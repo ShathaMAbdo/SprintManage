@@ -29,11 +29,25 @@
             <c:url var="saveUrl" value="/api/sprint/save" />
               <form:form id="sprint_form" modelAttribute="sprintAttr" method="POST" action="${saveUrl}">
                 <form:hidden path="id" />
-                <h3 id="form_header" class="text-warning" align="center">ActualHours for Sprint ${sprintAttr.name}</h3>
+                 <h3 id="form_header" class="text-warning" align="center">ActualHours for Sprint ${sprintAttr.name}</h3>
+                <form:hidden path="name" />
+                <form:hidden path="team"  />
+                <form:hidden path="goal" />
+                <form:hidden path="start"  />
+                <form:hidden path="delivery" />
+                <form:hidden path="retrospective"  />
+                <form:hidden path="demo" />
+                <form:hidden path="review"  />
+                <form:hidden path="daily_meeting" />
+                <form:hidden path="plannedPeriod"  />
                     <tbody>
                          <c:forEach items="${sprintAttr.tasks}" varStatus="spt" var="task">
                            <tr align="left">
                             <label ><font color="red">Task Name: </font></label><td><c:out value="${task.name}"/></td>
+                            <td><form:hidden path="tasks[${spt.index}].id"/></td>
+                            <td><form:hidden path="tasks[${spt.index}].name"/></td>
+                            <td><form:hidden path="tasks[${spt.index}].priority" /></td>
+                            <td><form:hidden path="tasks[${spt.index}].storyPoints" /></td>
                             <div>&nbsp;</div>
                               <table id="subtasks_table" class="table">
                                 <tbody>
@@ -41,22 +55,23 @@
                                      <tr align="left">
                                        <label >SubTask Name: </label>
                                        <c:out  value="${subTask.name}"/></td>
+                                       <td><form:hidden path="tasks[${spt.index}].subTasks[${st.index}].id"/></td>
+                                       <td><form:hidden path="tasks[${spt.index}].subTasks[${st.index}].name" /></td>
+                                       <td><form:hidden path="tasks[${spt.index}].subTasks[${st.index}].status" /></td>
+                                       <td><form:hidden path="tasks[${spt.index}].subTasks[${st.index}].OEstimate" /></td>
+                                       <td><form:hidden path="tasks[${spt.index}].subTasks[${st.index}].users"/></td>
                                        <table id="actualHours_table" class="table">
                                           <tbody>
                                              <c:forEach items="${subTask.actualHours}" varStatus="ah" var="actualHour">
-                                               <td style="width: 50px;"> Day${ah.index+1}</td>
+                                               <td style="width: 60px;"> Day${ah.index+1}</td>
                                              </c:forEach>
                                           </tbody>
                                        </table>
                                        <table id="actualHours_table" class="table">
                                           <tbody>
                                              <c:forEach items="${subTask.actualHours}" varStatus="ah" var="actualHour">
-                                             <%--  <td> ${actualHour}  </td>--%>
                                                <td>
-                                                    <form:input style="width: 30px;"
-                                                    type="number"
-                                                    path="${actualHours[ah.index]}"
-                                                    value="${actualHour}" />
+                                                    <form:input style="width: 50px;" type="number" path="tasks[${spt.index}].subTasks[${st.index}].actualHours[${ah.index}]" value="${actualHour}" />
                                                </td>
                                              </c:forEach>
                                           </tbody>
@@ -71,7 +86,7 @@
                  </table>
                   <div>&nbsp;</div>
 	            <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
-	            <c:url var="CancelUrl" value="/api/task/edit?taskid=${taskid}&sprintid=${sprintid}" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">Cancel</a>
+	            <c:url var="CancelUrl" value="/api/sprint/edit?sprintid=${sprintAttr.id}" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">back</a>
 
                </form:form>
 
