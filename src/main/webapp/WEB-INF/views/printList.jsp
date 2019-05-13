@@ -29,7 +29,7 @@
             <c:url var="saveUrl" value="/api/sprint/save" />
               <form:form id="sprint_form" modelAttribute="sprintAttr" method="POST" action="${saveUrl}">
                 <form:hidden path="id" />
-                 <h3 id="form_header" class="text-warning" align="center">ActualHours for Sprint ${sprintAttr.name}</h3>
+                 <h3 id="form_header" class="text-warning" align="center">All Task and SubTask of Sprint ${sprintAttr.name}</h3>
                     <tbody>
                          <c:forEach items="${sprintAttr.tasks}" varStatus="spt" var="task">
                            <tr align="left">
@@ -38,10 +38,15 @@
                                 <tbody>
                                    <c:forEach items="${task.subTasks}" varStatus="st" var="subTask">
                                      <tr align="left">
-                                      <td  height="50"><font size="5" color="red">Task: <c:out value="${task.name}"/></td>
+                                      <td width="200" height="50"><font size="4" color="red">Task: <c:out value="${task.name}"/></td>
                                      </tr>
                                       <tr align="left">
-                                      <td width="50" height="100"> <font size="5"> ${st.index+1}.SubTask: <c:out  value="${subTask.name}"/></td></td>
+                                      <td width="200" height="100"> <font size="4"> ${st.index+1}.SubTask: <c:out value="${subTask.name}"/></td></td>
+                                      <c:forEach items="${subTask.users}" varStatus="st" var="user">
+                                      <td width="100" height="100"> <font size="4"> Assigned to :<c:out value="${user.name}"/></td></td>
+                                      </c:forEach>
+                                      <td width="50" height="100"> <font size="4"> Status :<c:out value="${subTask.status}"/></td></td>
+                                      <td width="50" height="100"> <font size="4"> OEstimate : <c:out value="${subTask.OEstimate}"/> h</td></td>
                                       </tr>
                                    </c:forEach>
                                 </tbody>
