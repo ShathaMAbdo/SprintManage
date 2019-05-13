@@ -69,6 +69,14 @@ public class SprintController {
         return "actualHours";
     }
 
+    // view actualHours
+    @RequestMapping(value = "/print", method = RequestMethod.GET)
+    public String printSprint(@RequestParam(value = "sprintid", required = true) String id, Model model) {
+        log.debug("Request to open the print sprint form page");
+        model.addAttribute("sprintAttr", repository.findById(id).get());
+        return "printList";
+    }
+
     // Deleting the specified sprint.
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam(value = "id", required = true) String id, Model model) {
