@@ -137,6 +137,9 @@ public class SprintController {
     public String canvasjschart(@RequestParam(value = "sprintid", required = true) String sprintid, ModelMap modelMap) {
         List<List<Map<Object, Object>>> canvasjsDataList = sprintService.getCanvasjsDataList(sprintid);
         modelMap.addAttribute("dataPointsList", canvasjsDataList);
+        modelMap.addAttribute("sprintname", repository.findById(sprintid).get().getName());
+        modelMap.addAttribute("teamname", repository.findById(sprintid).get().getTeam().getName());
+
         return "actualdonedaily";
     }
 
@@ -144,6 +147,8 @@ public class SprintController {
     public String canvasjschart1(@RequestParam(value = "sprintid", required = true) String sprintid, ModelMap modelMap) {
         List<List<Map<Object, Object>>> canvasjsDataList = sprintService.getCanvasjsDataList1(sprintid);
         modelMap.addAttribute("dataPointsList", canvasjsDataList);
+        modelMap.addAttribute("sprintname", repository.findById(sprintid).get().getName());
+        modelMap.addAttribute("teamname", repository.findById(sprintid).get().getTeam().getName());
         return "actualremaindaily";
     }
 }

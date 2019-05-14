@@ -25,6 +25,7 @@
                     </nav>
              </div>
 	    <div class="container">
+	        <h9 id="form_header" class="text-warning" align="left">Sprint ${sprintname} > Task ${taskname} > </h3>
 	        <h3 id="form_header" class="text-warning" align="center">Sub Task</h3>
 	        <div>&nbsp;</div>
 
@@ -56,8 +57,8 @@
                            <tbody>
                             	<c:forEach items="${subtaskAttr.users}" varStatus="st" var="user"   >
                             	    <tr align="left">
-                            	      <td><form:input path="users[${st.index}].name" cssClass="form-control" value="${user.name}"/></td>
-                            	      <td><form:input type="hidden" path="users[${st.index}].email"         value="${user.email}"/></td>
+                            	      <td><form:input path="users[${st.index}].name" cssClass="form-control"   value="${user.name}"/></td>
+                            	      <td><form:input type="hidden" path="users[${st.index}].email"            value="${user.email}"/></td>
                                       <td><form:input type="hidden" path="users[${st.index}].phone"            value="${user.phone}"/></td>
                             	      <td><form:input type="hidden" path="users[${st.index}].city"             value="${user.city}"/></td>
                             	      <td><form:input type="hidden" path="users[${st.index}].roles"            value="${user.roles}"/></td>

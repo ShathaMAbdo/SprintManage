@@ -49,6 +49,8 @@ public class SubTaskController {
         model.addAttribute("subtaskAttr", SubTask.builder().OEstimate(0).users(new ArrayList<>()).build());
         model.addAttribute("taskid", taskid);
         model.addAttribute("sprintid", sprintid);
+        model.addAttribute("taskname", taskRepo.findById(taskid).get().getName());
+        model.addAttribute("sprintname", sprintRepo.findById(sprintid).get().getName());
         return "subtaskform";
     }
 
@@ -60,6 +62,8 @@ public class SubTaskController {
         model.addAttribute("subtaskAttr", repository.findById(id).get());
         model.addAttribute("taskid", taskid);
         model.addAttribute("sprintid", sprintid);
+        model.addAttribute("taskname", taskRepo.findById(taskid).get().getName());
+        model.addAttribute("sprintname", sprintRepo.findById(sprintid).get().getName());
 
         return "subtaskform";
     }
