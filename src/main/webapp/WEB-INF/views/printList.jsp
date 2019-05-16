@@ -33,6 +33,7 @@
                 <form:hidden path="id" />
                  <h3 id="form_header" class="text-warning" align="center">All Task and SubTask of Sprint ${sprintAttr.name}</h3>
                  <div>&nbsp;</div>
+                 <table id="tasks_table" class="table">
                     <tbody>
                          <c:forEach items="${sprintAttr.tasks}" varStatus="spt" var="task">
                            <tr align="left">
