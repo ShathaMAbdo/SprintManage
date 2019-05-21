@@ -15,7 +15,7 @@ import se.BTH.ITProjectManagement.repositories.RoleRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
 import se.BTH.ITProjectManagement.security.SecurityService;
 import se.BTH.ITProjectManagement.security.UserService;
-import se.BTH.ITProjectManagement.security.UserValidator;
+import se.BTH.ITProjectManagement.validators.UserValidator;
 
 import java.security.Principal;
 import java.util.ArrayList;

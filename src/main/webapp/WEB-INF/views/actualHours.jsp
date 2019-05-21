@@ -63,7 +63,7 @@
                                        <table id="actualHours_table" class="table">
                                           <tbody>
                                              <c:forEach items="${subTask.actualHours}" varStatus="ah" var="actualHour">
-                                               <td align="center" width="30">Day ${ah.index+1}</td>
+                                               <td style="width: 50px;">Day ${ah.index+1}</td>
                                              </c:forEach>
                                           </tbody>
                                        </table>
@@ -71,7 +71,7 @@
                                           <tbody>
                                              <c:forEach items="${subTask.actualHours}" varStatus="ah" var="actualHour">
                                                <td>
-                                                    <form:input align="center" style="width: 120%;" type="number" path="tasks[${spt.index}].subTasks[${st.index}].actualHours[${ah.index}]" value="${actualHour}" />
+                                                    <form:input style="width: 30px;" type="number" min="0" path="tasks[${spt.index}].subTasks[${st.index}].actualHours[${ah.index}]" value="${actualHour}" />
                                                </td>
                                              </c:forEach>
                                           </tbody>

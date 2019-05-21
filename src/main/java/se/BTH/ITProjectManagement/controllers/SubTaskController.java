@@ -4,12 +4,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import se.BTH.ITProjectManagement.models.*;
 import se.BTH.ITProjectManagement.repositories.SprintRepository;
 import se.BTH.ITProjectManagement.repositories.SubTaskRepository;
 import se.BTH.ITProjectManagement.repositories.TaskRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
+import se.BTH.ITProjectManagement.validators.SubTaskValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,8 @@ public class SubTaskController {
     private SprintRepository sprintRepo;
     @Autowired
     private UserRepository userRepo;
-
+    @Autowired
+    private SubTaskValidator subTaskValidator;
 
 //    // Displaying the initial subtasks list.
 //    @RequestMapping(value = "/subtasks", method = RequestMethod.GET)
@@ -160,7 +163,16 @@ public class SubTaskController {
     // Adding a new subtask or updating an existing subtask.
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("subtaskAttr") SubTask subtask, @RequestParam(value = "taskid", required = true) String taskid,
-                       @RequestParam(value = "sprintid", required = true) String sprintid) {
+                       @RequestParam(value = "sprintid", required = true) String sprintid, BindingResult bindingResult) {
+        subTaskValidator.validate(subtask, bindingResult);
+
+        if (bindingResult.hasErrors()&&subtask.getId().equals("")) {
+            return "redirect:/api/subtask/add?taskid=" + taskid + "&sprintid=" + sprintid;
+        }
+        else if(bindingResult.hasErrors()&& !subtask.getId().equals(""))
+        {
+            return "redirect:/api/subtask/edit?id="+subtask.getId()+"&taskid=" + taskid + "&sprintid=" + sprintid;
+        }
         Sprint sprint = sprintRepo.findById(sprintid).get();
         int taskIndex = sprint.findTaskIndex(taskid);
         Task task = sprint.getTasks().get(taskIndex);

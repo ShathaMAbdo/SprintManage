@@ -4,6 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
+
 	    <title>Sub Task </title>
 	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -43,8 +44,21 @@
                         <form:option value="DISCARDED" label="DISCARDED"/>
                         <form:option value="DONE" label="DONE"/>
                         </form:select>
-	            <label for="subtask_name">Enter OEstimate: </label>
-                <form:input id="subtask_name" type="number" cssClass="form-control" path="OEstimate" />
+
+                <label for="subtask_name">Enter OEstimate: </label>
+                <spring:bind path="OEstimate">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <c:if test = "${status.error ? 'has-error' : ''}">
+                       <span style="color:red;font-weight:bold">OEstimate must be positive</span>
+                      </c:if>
+                    <span>${message}</span>
+                     <form:input id="subtask_name" type="number"  min="0" path="OEstimate" cssClass="form-control" placeholder="OEstimate"></form:input>
+                     <form:errors path="OEstimate"></form:errors>
+                    </div>
+
+                </spring:bind>
+
+
 	            <div>&nbsp;</div>
 	             <label for="subtask_name">Assigned to: </label>
                 	  <table id="users_table" class="table">
@@ -87,8 +101,8 @@
                       <table id="actualHours_table1" class="table">
                             <tbody>
                                <c:forEach items="${subtaskAttr.actualHours}" varStatus="st" var="actualHour"   >
-                               <td><form:input style="width: 50px;"
-                               type="number"
+                               <td><form:input style="width: 30px;"
+                               type="number" min="0"
                                path="actualHours[${st.index}]"
                                value="${actualHour}" />
                                </td>

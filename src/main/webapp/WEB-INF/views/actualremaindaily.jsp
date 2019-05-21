@@ -81,7 +81,8 @@ function toggleDataSeries(e) {
 </script>
 </head>
 <body>
-    <h9 id="form_header" class="text-warning" align="left">Sprint: ${sprintname} & Team: ${teamname}  </h3>
+<h1 id="form_header" class="text-warning" align="center" style="font-weight:bold">Sprint: ${sprintname}  </h1>
+<h1 id="form_header" class="text-warning" align="center" style="font-weight:bold"> Team: ${teamname}  </h1>
 	<div id="chartContainer" style="height: 600px; width: 100%;"></div>
 	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>

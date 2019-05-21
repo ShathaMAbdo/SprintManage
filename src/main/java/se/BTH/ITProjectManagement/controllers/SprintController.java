@@ -1,7 +1,8 @@
 package se.BTH.ITProjectManagement.controllers;
 
-import org.apache.log4j.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 
@@ -19,7 +20,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/api/sprint")
 public class SprintController {
-    private static org.apache.log4j.Logger log = Logger.getLogger(SprintController.class);
+    private static final Logger log = LoggerFactory.getLogger(SprintController.class);
 
     @Autowired
     private SprintRepository repository;
@@ -35,17 +36,16 @@ public class SprintController {
 
     @RequestMapping(value = "/sprints", method = RequestMethod.GET)
     public String getsprints(Model model) {
-        log.debug("Request to fetch all sprints from the mongo database");
+        log.info("Request to fetch all sprints from the mongo database");
         List<Sprint> sprint_list = repository.findAll();
         model.addAttribute("sprints", sprint_list);
-
         return "sprint";
     }
 
     // Opening the add new sprint form page.
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addSprint(@Param(value = "name") String name, Model model) {
-        log.debug("Request to open the new sprint form page");
+        log.info("Request to open the new sprint form page");
         Sprint sprint = Sprint.builder().name(name).build();
         // repository.save(sprint);
         model.addAttribute("sprintAttr", sprint);
@@ -55,7 +55,7 @@ public class SprintController {
     // Opening the edit sprint form page.
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String editSprint(@RequestParam(value = "sprintid", required = true) String id, Model model) {
-        log.debug("Request to open the edit Sprint form page");
+        log.info("Request to open the edit Sprint form page");
         model.addAttribute("sprintAttr", repository.findById(id).get());
         return "sprintform";
     }
@@ -64,7 +64,7 @@ public class SprintController {
     // view actualHours
     @RequestMapping(value = "/actualHours", method = RequestMethod.GET)
     public String editActualHours(@RequestParam(value = "sprintid", required = true) String id, Model model) {
-        log.debug("Request to open the edit actualHours form page");
+        log.info("Request to open the edit actualHours form page");
         model.addAttribute("sprintAttr", repository.findById(id).get());
         return "actualHours";
     }
@@ -72,7 +72,7 @@ public class SprintController {
     // view actualHours
     @RequestMapping(value = "/print", method = RequestMethod.GET)
     public String printSprint(@RequestParam(value = "sprintid", required = true) String id, Model model) {
-        log.debug("Request to open the print sprint form page");
+        log.info("Request to open the print sprint form page");
         model.addAttribute("sprintAttr", repository.findById(id).get());
         return "printList";
     }
@@ -113,7 +113,7 @@ public class SprintController {
     //Select one team from teams
     @RequestMapping(value = "/teams", method = RequestMethod.GET)
     public String viewTeamsToSelect(@RequestParam(value = "id", required = true) String id, Model model) {
-        log.debug("Request to fetch all teams from the db for custom team and select team");
+        log.info("Request to fetch all teams from the db for custom team and select team");
         model.addAttribute("teams", teamRepository.findAll());
         model.addAttribute("sprintid", id);
         return "sprintteam";
