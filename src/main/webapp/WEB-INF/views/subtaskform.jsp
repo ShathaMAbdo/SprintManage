@@ -46,18 +46,12 @@
                         </form:select>
 
                 <label for="subtask_name">Enter OEstimate: </label>
-                <spring:bind path="OEstimate">
+                   <spring:bind path="OEstimate">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                    <c:if test = "${status.error ? 'has-error' : ''}">
-                       <span style="color:red;font-weight:bold">OEstimate must be positive</span>
-                      </c:if>
-                    <span>${message}</span>
-                     <form:input id="subtask_name" type="number"  min="0" path="OEstimate" cssClass="form-control" placeholder="OEstimate"></form:input>
-                     <form:errors path="OEstimate"></form:errors>
+                     <form:input id="subtask_name" type="number"   path="OEstimate" cssClass="form-control" placeholder="OEstimate"></form:input>
+                     <form:errors path="OEstimate" style="color: red; font-weight: bold; "  ></form:errors>
                     </div>
-
                 </spring:bind>
-
 
 	            <div>&nbsp;</div>
 	             <label for="subtask_name">Assigned to: </label>

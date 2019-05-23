@@ -13,6 +13,7 @@ import se.BTH.ITProjectManagement.repositories.TaskRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
 import se.BTH.ITProjectManagement.validators.SubTaskValidator;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -87,7 +88,8 @@ public class SubTaskController {
 
     // Deleting the specified member from assignment of subtask.
     @RequestMapping(value = "/addmember", method = RequestMethod.GET)
-    public String addmember(@RequestParam(value = "userid", required = true) String userid, @RequestParam(value = "id", required = true) String subtaskid,
+    public String addmember(@RequestParam(value = "userid", required = true) String userid,
+                            @RequestParam(value = "id", required = true) String subtaskid,
                             @RequestParam(value = "taskid", required = true) String taskid,
                             @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
         Sprint sprint = sprintRepo.findById(sprintid).get();
@@ -116,7 +118,8 @@ public class SubTaskController {
 
     // Deleting the specified member from assignment of subtask.
     @RequestMapping(value = "/deletemember", method = RequestMethod.GET)
-    public String deletemember(@RequestParam(value = "userid", required = true) String userid, @RequestParam(value = "id", required = true) String subtaskid,
+    public String deletemember(@RequestParam(value = "userid", required = true) String userid,
+                               @RequestParam(value = "id", required = true) String subtaskid,
                                @RequestParam(value = "taskid", required = true) String taskid,
                                @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
         // repository.deleteById(id);
@@ -141,7 +144,8 @@ public class SubTaskController {
 
     // Deleting the specified subtask.
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String delete(@RequestParam(value = "id", required = true) String id, @RequestParam(value = "taskid", required = true) String taskid,
+    public String delete(@RequestParam(value = "id", required = true) String id,
+                         @RequestParam(value = "taskid", required = true) String taskid,
                          @RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
         Sprint sprint = sprintRepo.findById(sprintid).get();
         List<Task> tasks = sprint.getTasks();
@@ -162,16 +166,16 @@ public class SubTaskController {
 
     // Adding a new subtask or updating an existing subtask.
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(@ModelAttribute("subtaskAttr") SubTask subtask, @RequestParam(value = "taskid", required = true) String taskid,
-                       @RequestParam(value = "sprintid", required = true) String sprintid, BindingResult bindingResult) {
-        subTaskValidator.validate(subtask, bindingResult);
+    public String save(@ModelAttribute("subtaskAttr")@Valid  SubTask subtask,
+                       BindingResult bindingResult,Model model,
+                       @RequestParam(value = "taskid", required = true) String taskid,
+                       @RequestParam(value = "sprintid", required = true) String sprintid) {
+       // subTaskValidator.validate(subtask, bindingResult);
 
-        if (bindingResult.hasErrors()&&subtask.getId().equals("")) {
-            return "redirect:/api/subtask/add?taskid=" + taskid + "&sprintid=" + sprintid;
-        }
-        else if(bindingResult.hasErrors()&& !subtask.getId().equals(""))
-        {
-            return "redirect:/api/subtask/edit?id="+subtask.getId()+"&taskid=" + taskid + "&sprintid=" + sprintid;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("taskid", taskid);
+            model.addAttribute("sprintid", sprintid);
+            return "subtaskform";
         }
         Sprint sprint = sprintRepo.findById(sprintid).get();
         int taskIndex = sprint.findTaskIndex(taskid);
@@ -193,5 +197,6 @@ public class SubTaskController {
         sprint.getTasks().add(taskIndex, task);
         sprintRepo.save(sprint);
         return "redirect:/api/task/edit?taskid=" + taskid + "&sprintid=" + sprintid;
+
     }
 }

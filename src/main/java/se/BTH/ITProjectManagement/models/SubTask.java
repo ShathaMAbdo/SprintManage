@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import se.BTH.ITProjectManagement.Annotations.PositiveNumber;
 
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class SubTask {
     private String id;
     private String name;
     private TaskStatus status;
-    @Min(value = 0)
+   @PositiveNumber
     private Integer OEstimate; //planned hours
     private List<Integer> actualHours;
     private List<User> users;
