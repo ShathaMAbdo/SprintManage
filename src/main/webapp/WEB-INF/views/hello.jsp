@@ -30,9 +30,13 @@
                     <ul class="nav navbar-nav">
                         <li><a href="api/user/users" style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
                         <li><a href="api/team/teams" style="color:red;"th:href="@{/api/team/teams}">TEAMS</a></li>
-                        <li><a href="api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
+                        <c:if test="${isAdmin == true}">
+                            <li><a href="api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
+                        </c:if>
                         <li><a href="api/sprint/sprints" style="color:red;"th:href="@{api/sprint/sprints}">SPRINTS</a></li>
+                        <c:if test="${isAdmin == true}">
                         <li><a href="api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                        </c:if>
                         <li><a href="api/user/edit"style="color:red;" th:href="@{/api/user/edit}">Profile</a></li>
 
                          <a style="color:black;" onclick="document.forms['logoutForm'].submit()">Logout</a>

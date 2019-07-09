@@ -11,6 +11,7 @@ import se.BTH.ITProjectManagement.Annotations.PositiveNumber;
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -23,18 +24,32 @@ public class SubTask {
     private String id;
     private String name;
     private TaskStatus status;
-   @PositiveNumber
+    @PositiveNumber
     private Integer OEstimate; //planned hours
-    private List<Integer> actualHours;
+    // private List<Integer> actualHours;
     private List<User> users;
+    private Map<String, List<Integer>> userActualHours;
 
-    public static List<Integer> intiActualHoursList(int dayes){
-        List<Integer> temp=new ArrayList<>();
-        for (int i = 0; i <dayes ; i++) {
+    public static List<Integer> intiActualHoursList(int dayes) {
+        List<Integer> temp = new ArrayList<>();
+        for (int i = 0; i < dayes; i++) {
             temp.add(0);
         }
         return temp;
     }
+
+    public List<Integer> totalSubtaskActualHours(Integer dayes) {
+        List<Integer> temp, total = new ArrayList<>();
+        total=SubTask.intiActualHoursList(dayes);
+        for (User u : this.getUsers()) {
+            temp = this.getUserActualHours().get(u.getUsername());
+            for (int j = 0; j < temp.size(); j++) {
+                total.set(j, total.get(j)+temp.get(j));
+            }
+        }
+        return total;
+    }
+
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();

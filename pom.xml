@@ -16,6 +16,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+            <name>docker</name>
+            <value>!true</value>
     </properties>
 
     <dependencies>
@@ -42,7 +44,7 @@
              <artifactId>spring-boot-starter-web</artifactId>
          </dependency>
          -->
-         <!-- thymeleaf -->
+        <!-- thymeleaf -->
         <!--
            <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -97,21 +99,21 @@
         </dependency>
 
         <!-- security -->
-       <!--  <dependency>
-              <groupId>org.springframework.boot</groupId>
-              <artifactId>spring-boot-starter-security</artifactId>
-          </dependency>
+        <!--  <dependency>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-security</artifactId>
+           </dependency>
 
+            <dependency>
+               <groupId>org.springframework.security</groupId>
+               <artifactId>spring-security-test</artifactId>
+               <scope>test</scope>
+           </dependency>
            <dependency>
-              <groupId>org.springframework.security</groupId>
-              <artifactId>spring-security-test</artifactId>
-              <scope>test</scope>
-          </dependency>
-          <dependency>
-              <groupId>org.springframework.security</groupId>
-              <artifactId>spring-security-security</artifactId>
-              <version>RELEASE</version>
-          </dependency>-->
+               <groupId>org.springframework.security</groupId>
+               <artifactId>spring-security-security</artifactId>
+               <version>RELEASE</version>
+           </dependency>-->
 
         <!-- web services -->
         <dependency>
@@ -184,15 +186,16 @@
              <version>1.7.1</version>
          </dependency>-->
 
-     </dependencies>
+    </dependencies>
 
-     <build>
-         <plugins>
-             <plugin>
-                 <groupId>org.springframework.boot</groupId>
-                 <artifactId>spring-boot-maven-plugin</artifactId>
-             </plugin>
-         </plugins>
-     </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <!--  <finalName>docker-spring-mongo </finalName> -->
+    </build>
 
- </project>
+</project>

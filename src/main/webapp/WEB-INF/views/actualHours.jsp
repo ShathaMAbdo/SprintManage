@@ -60,19 +60,21 @@
                                        <td><form:hidden path="tasks[${spt.index}].subTasks[${st.index}].status" /></td>
                                        <td><form:hidden path="tasks[${spt.index}].subTasks[${st.index}].OEstimate" /></td>
                                        <td><form:hidden path="tasks[${spt.index}].subTasks[${st.index}].users"/></td>
+
                                        <table id="actualHours_table" class="table">
                                           <tbody>
-                                             <c:forEach items="${subTask.actualHours}" varStatus="ah" var="actualHour">
-                                               <td style="width: 50px;">Day ${ah.index+1}</td>
-                                             </c:forEach>
-                                          </tbody>
-                                       </table>
-                                       <table id="actualHours_table" class="table">
-                                          <tbody>
-                                             <c:forEach items="${subTask.actualHours}" varStatus="ah" var="actualHour">
-                                               <td>
-                                                    <form:input style="width: 30px;" type="number" min="0" path="tasks[${spt.index}].subTasks[${st.index}].actualHours[${ah.index}]" value="${actualHour}" />
-                                               </td>
+                                              <c:forEach items="${subTask.userActualHours}" varStatus="ust" var="useractualHour">
+                                              <tr><td ><font size="3" color="blue">${useractualHour.key}</td> </tr>
+                                                <tr>
+                                                   <c:forEach items="${useractualHour.value}" varStatus="ah" var="actualHour"   >
+                                                     <td style="width: 50px;"> Day ${ah.index+1}</td>
+                                                    </c:forEach>
+                                                 </tr>
+                                                <tr>
+                                                 <c:forEach items="${useractualHour.value}" varStatus="ah" var="actualHour"   >
+                                                   <td><form:input style="width: 30px;" type="number" min="0" path="tasks[${spt.index}].subTasks[${st.index}].userActualHours[${useractualHour.key}][${ah.index}]" value="${actualHour}" /> </td>
+                                                 </c:forEach>
+                                                </tr>
                                              </c:forEach>
                                           </tbody>
                                        </table>

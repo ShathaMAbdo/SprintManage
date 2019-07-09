@@ -13,11 +13,12 @@ import se.BTH.ITProjectManagement.models.User;
 import se.BTH.ITProjectManagement.repositories.SprintRepository;
 import se.BTH.ITProjectManagement.repositories.TeamRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
+import se.BTH.ITProjectManagement.services.UserService;
 
+import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -32,12 +33,20 @@ public class TeamController {
     private UserRepository userRepository;
     @Autowired
     private SprintRepository sprintRepository;
+    @Autowired
+    private UserService userService;
 
     // Displaying the initial teams list.
     @RequestMapping(value = "/teams", method = RequestMethod.GET)
-    public String getTeams(Model model) {
+    public String getTeams(Model model, Principal user) {
         log.debug("Request to fetch all teams from the mongo database");
-        List<Team> team_list = repository.findAll();
+        Boolean isAdmin=userService.isAdmin(user.getName());
+        List<Team> team_list;
+        if (isAdmin)
+        team_list = repository.findAll();
+        else
+         team_list = repository.findAll().stream().filter(t->t.isUserInTeam(user)).collect(Collectors.toList());
+        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("teams", team_list);
         return "team";
     }
@@ -62,7 +71,7 @@ public class TeamController {
 
     // Opening the edit team form page.
     @RequestMapping(value = "/sprintteam", method = RequestMethod.GET)
-    public String sprintteam(@RequestParam(value = "sprintid", required = true) String id, Model model) {
+    public String sprintteam(@RequestParam(value = "sprintid", required = true) String id, Model model,Principal user) {
         log.debug("Request to open the edit team form page");
         Team team;
         Sprint sprint = sprintRepository.findById(id).get();
@@ -72,17 +81,20 @@ public class TeamController {
             member_list.removeIf(u -> u.isActive() == false);
             team.setUsers(member_list);
         } else team = Team.builder().active(true).users(new ArrayList<>()).build();
+        Boolean isAdmin=userService.isAdmin(user.getName());
+        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("teamAttr", team);
         model.addAttribute("sprintid", id);
         return "sprintteamform";
     }
 
-    // Deleting the specified user.
-    @RequestMapping(value = "/members", method = RequestMethod.GET) //must be put and add search
+    // view all  users.
+    @RequestMapping(value = "/members", method = RequestMethod.GET)
     public String members(@RequestParam("id") String id, Model model) {
         log.debug("Request to fetch all users from the mongo database");
         Team team = repository.findById(id).get();
         List<User> user_list = userRepository.findAll();
+        user_list.removeIf(u -> !u.isActive());
         model.addAttribute("members", user_list);
         model.addAttribute("team", team);
         return "teammember";
@@ -94,9 +106,10 @@ public class TeamController {
         Team team = repository.findById(teamid).get();
         List<User> members = team.getUsers();
         User user = userRepository.findById(id).get();
-       if(!team.isMememberExcit(user)) {
-           team.getUsers().add(user);
-        team.setUsers(members);}
+        if (!team.isMememberExcit(user)) {
+            team.getUsers().add(user);
+            team.setUsers(members);
+        }
         repository.save(team);
         return "redirect:/api/team/edit?id=" + team.getId();
     }
@@ -104,6 +117,13 @@ public class TeamController {
     // Deleting the specified team.
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public String delete(@RequestParam(value = "id", required = true) String id, Model model) {
+        repository.deleteById(id);
+        return "redirect:teams";
+    }
+
+    // Deleting the specified team.
+    @RequestMapping(value = "/enable", method = RequestMethod.GET)
+    public String enable(@RequestParam(value = "id", required = true) String id, Model model) {
         Team team = repository.findById(id).get();
         team.changeActive();
         repository.save(team);

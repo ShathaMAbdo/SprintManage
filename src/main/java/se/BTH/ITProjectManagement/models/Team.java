@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -51,5 +52,8 @@ public class Team {
 
         return jsonString;
     }
-
+  public Boolean isUserInTeam(Principal user){
+     Boolean present =users.stream().filter(u ->u.getUsername().equals(user.getName())).findFirst().isPresent();
+        return present;
+  }
 }

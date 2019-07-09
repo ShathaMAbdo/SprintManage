@@ -18,7 +18,7 @@
                                     <li><a href="/api/user/users"style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
                                     <li><a href="/api/team/teams" style="color:red;"th:href="@{/api/team/teams}">Teams</a></li>
                                     <li><a href="/api/sprint/sprints"style="color:red;" th:href="@{api/sprint/sprints}">SPRINTS</a></li>
-                                    <li><a href="/api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+
                                 </ul>
                             </div>
                         </div>
@@ -65,7 +65,9 @@
                             	</tbody>
                       </table>
 	            <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
-	            <c:url var="addUrl" value="/api/subtask/add?taskid=${taskAttr.id}&sprintid=${sprintid}" /><a id="add" href="${addUrl}" class="btn btn-info">Add subTask</a>
+	             <c:if test="${taskAttr.id != null}">
+	                  <c:url var="addUrl" value="/api/subtask/add?taskid=${taskAttr.id}&sprintid=${sprintid}" /><a id="add" href="${addUrl}" class="btn btn-info">Add subTask</a>
+                 </c:if>
                 <c:url var="CancelUrl" value="/api/task/tasks?sprintid=${sprintid}" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">Cancel</a>
 	        </form:form>
 	</body>

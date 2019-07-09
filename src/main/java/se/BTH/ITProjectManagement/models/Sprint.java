@@ -10,8 +10,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.security.Principal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -74,11 +76,11 @@ public class Sprint {
     public List<Double> Actual_hours_today_sum() {
         List<Double> Actual_hours_today = new ArrayList<>();
         Double total;
-        for (int i = 0; i < plannedPeriod ; i++) {
+        for (int i = 0; i < plannedPeriod; i++) {
             total = 0.0;
             for (Task t : tasks) {
                 int j = i;
-                total += t.getSubTasks().stream().mapToInt(st -> st.getActualHours().get(j)).sum();
+                total += t.getSubTasks().stream().mapToInt(st -> st.totalSubtaskActualHours(plannedPeriod).get(j)).sum();
             }
             Actual_hours_today.add(i, total);
         }
@@ -94,7 +96,7 @@ public class Sprint {
         List<Double> Actual_hours_remaining = new ArrayList<>();
         List<Double> Actual_hours_today = Actual_hours_today_sum();
         double remain = 0;
-        for (int i = 0; i < plannedPeriod ; i++) {
+        for (int i = 0; i < plannedPeriod; i++) {
             if (i == 0) remain = Calculate_total_estimate() - Actual_hours_today.get(i);
             else remain -= Actual_hours_today.get(i);
 
@@ -108,13 +110,42 @@ public class Sprint {
         double plannedToday = Calculate_Planned_hours_today();
         double totalEstimate = Calculate_total_estimate();
         double remain = totalEstimate;
-        for (int i = 0; i < plannedPeriod ; i++) {
+        for (int i = 0; i < plannedPeriod; i++) {
             remain -= plannedToday;
             planned_hours_remaining.add(i, remain);
         }
         return planned_hours_remaining;
     }
 
+    public Boolean isUserInSprint(Principal user) {
+
+        Boolean present = team.getUsers().stream().filter(u -> u.getUsername().equals(user.getName())).findFirst().isPresent();
+        return present;
+
+    }
+
+    public Map<String, List<Integer>> totalActualHoursPerUser() {
+        List<Integer> temp = new ArrayList<>(), total = new ArrayList<>();
+        Map<String, List<Integer>> totalAHPerUser = new HashMap<>();
+        for (User u : this.getTeam().getUsers()) {
+            temp = new ArrayList<>();
+            total=SubTask.intiActualHoursList(this.getPlannedPeriod());
+            for (Task task : this.getTasks()) {
+                for (SubTask subTask : task.getSubTasks()) {
+                    temp = subTask.getUserActualHours().get(u.getUsername());
+               //     System.out.println(u.getUsername() + "actual Hours" + temp);
+                    if (temp != null) {
+                        for (int j = 0; j < temp.size(); j++) {
+                         //   System.out.println(u.getUsername() + "actual Hours" + temp+"totla "+total);
+                            total.set(j, total.get(j)+temp.get(j));
+                        }
+                    }
+                }
+            }
+            totalAHPerUser.put(u.getUsername(), total);
+        }
+        return totalAHPerUser;
+    }
 
     @Override
     public String toString() {

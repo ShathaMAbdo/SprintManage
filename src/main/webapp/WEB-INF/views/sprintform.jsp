@@ -19,7 +19,9 @@
                                 <li><a class="navbar-brand" href="/" th:href="@{/}">Home</a></li>
                                 <li><a href="/api/user/users"style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
                                 <li><a href="/api/team/teams"style="color:red;" th:href="@{/api/team/teams}">Teams</a></li>
-                                <li><a href="/api/team/add" style="color:red;"th:href="@{/api/team/add}">Create TEAM</a></li>
+                                 <c:if test="${isAdmin == true}">
+                                        <li><a href="/api/team/add" style="color:red;"th:href="@{/api/team/add}">Create TEAM</a></li>
+                                 </c:if>
                                 <li><a href="/api/sprint/sprints" style="color:red;"th:href="@{api/sprint/sprints}">SPRINTS</a></li>
                             </ul>
 
@@ -59,13 +61,13 @@
         <form:hidden path="tasks" />
         <div>&nbsp;</div>
         <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
-        <c:url var="sprintteamUrl" value="/api/team/sprintteam?sprintid=${sprintAttr.id}" /><a id="view" href="${sprintteamUrl}" class="btn btn-info">Sprint team</a>
-        <c:url var="sprinttaskUrl" value="/api/task/tasks?sprintid=${sprintAttr.id}" /><a id="viewtask" href="${sprinttaskUrl}" class="btn btn-warning">Sprint tasks</a>
-        <c:url var="edithoursUrl" value="/api/sprint/actualHours?sprintid=${sprintAttr.id}" /><a id="editactuslhours" href="${edithoursUrl}" class="btn btn-success">Edit ActualHours</a>
-        <c:url var="printUrl" value="/api/sprint/print?sprintid=${sprintAttr.id}" /><a id="print" href="${printUrl}" class="btn btn-default">Print</a>
+        <c:if test="${sprintAttr.id != null}">
+           <c:url var="sprintteamUrl" value="/api/team/sprintteam?sprintid=${sprintAttr.id}" /><a id="view" href="${sprintteamUrl}" class="btn btn-info">Sprint team</a>
+           <c:url var="sprinttaskUrl" value="/api/task/tasks?sprintid=${sprintAttr.id}" /><a id="viewtask" href="${sprinttaskUrl}" class="btn btn-warning">Sprint tasks</a>
+           <c:url var="edithoursUrl" value="/api/sprint/actualHours?sprintid=${sprintAttr.id}" /><a id="editactuslhours" href="${edithoursUrl}" class="btn btn-success">Edit ActualHours</a>
+           <c:url var="printUrl" value="/api/sprint/print?sprintid=${sprintAttr.id}" /><a id="print" href="${printUrl}" class="btn btn-default">Print</a>
+        </c:if>
         <c:url var="CancelUrl" value="/api/sprint/sprints" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">Cancel</a>
-
-
 
     </form:form>
 </div>

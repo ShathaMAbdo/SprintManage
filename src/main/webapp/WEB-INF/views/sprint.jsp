@@ -17,8 +17,10 @@
                             <li><a class="navbar-brand" href="/" th:href="@{/}">Home</a></li>
                             <li><a href="/api/user/users"style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
                             <li><a href="/api/team/teams" style="color:red;"th:href="@{api/team/teams}">TEAMS</a></li>
-                            <li><a href="/api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
-                            <li><a href="/api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                            <c:if test="${isAdmin == true}">
+                               <li><a href="/api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
+                               <li><a href="/api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                            </c:if >
                         </ul>
 
                     </div>
@@ -37,7 +39,7 @@
         <thead>
         <tr align="center">
 
-            <th>Name</th>
+      <th>Name</th>
             <th>Goal</th>
             <th>Start</th>
             <th>Delivery</th>
@@ -61,10 +63,11 @@
                 <td>
                      <c:url var="viewUrl" value="/api/sprint/sprintcharts?sprintid=${sprint.id}" /><a id="viewChart" href="${viewUrl}" class="btn btn-success">Charts</a>
                 </td>
+                <c:if test="${isAdmin == true}">
                 <td>
                     <c:url var="deleteUrl" value="/api/sprint/delete?id=${sprint.id}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Delete</a>
                 </td>
-
+                 </c:if >
             </tr>
         </c:forEach>
         </tbody>

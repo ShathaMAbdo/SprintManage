@@ -14,7 +14,9 @@ import se.BTH.ITProjectManagement.models.Task;
 import se.BTH.ITProjectManagement.repositories.SprintRepository;
 import se.BTH.ITProjectManagement.repositories.SubTaskRepository;
 import se.BTH.ITProjectManagement.repositories.TaskRepository;
+import se.BTH.ITProjectManagement.services.UserService;
 
+import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -29,13 +31,17 @@ public class TaskController {
     private SprintRepository sprintRepo;
     @Autowired
     private SubTaskRepository subTaskRepo;
+    @Autowired
+    private UserService userService;
 
     // Displaying the tasks list for custom sprint .
     @RequestMapping(value = "/tasks", method = RequestMethod.GET)
-    public String getTasks(@RequestParam(value = "sprintid", required = true) String sprintid, Model model) {
+    public String getTasks(@RequestParam(value = "sprintid", required = true) String sprintid, Model model, Principal user) {
         log.info("Request to fetch all tasks for custom sprint from the mongo database");
         Sprint sprint = sprintRepo.findById(sprintid).get();
         List<Task> task_list = sprint.getTasks();
+        Boolean isAdmin=userService.isAdmin(user.getName());
+        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("tasks", task_list);
         model.addAttribute("sprintid", sprintid);
         model.addAttribute("sprintname", sprintRepo.findById(sprintid).get().getName());

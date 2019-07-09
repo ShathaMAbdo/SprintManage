@@ -54,8 +54,9 @@
             	        	<tbody>
             	            	<c:forEach items="${teamAttr.users}" varStatus="us" var="user"   >
             	                	<tr align="left">
-            	                	    <td><form:input path="users[${us.index}].name" value="${user.name}"/></td>
+            	                		<td><c:out value="${user.name}" /></td>
                                         <td><form:checkbox path="users[${us.index}].active"  value="${user.active}"/></td>
+                                        <td><form:input type="hidden" path="users[${us.index}].name" value="${user.name}"/></td>
             	                    	<td><form:input type="hidden" path="users[${us.index}].id" value="${user.id}" /></td>
             	                    	<td><form:input type="hidden" path="users[${us.index}].password" value="${user.password}" /></td>
             	                    	<td><form:input type="hidden" path="users[${us.index}].username" value="${user.username}" /></td>
@@ -68,7 +69,10 @@
             	        	</tbody>
             	 </table>
             	<button  id="saveBtn" type="submit" class="btn btn-primary">Save</button>
-            	<c:url var="addUrl" value="/api/team/members?id=${teamAttr.id}" /><a id="add" href="${addUrl}" class="btn btn-info">Add member</a>
+            	 <c:if test="${teamAttr.id != null}">
+             	  <c:url var="addUrl" value="/api/team/members?id=${teamAttr.id}" /><a id="add" href="${addUrl}" class="btn btn-info">Add member</a>
+                  </c:if>
+
             	<c:url var="CancelUrl" value="/api/team/teams" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">Cancel</a>
 
             	</form:form>

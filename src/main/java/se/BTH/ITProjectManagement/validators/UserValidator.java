@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import se.BTH.ITProjectManagement.models.User;
-import se.BTH.ITProjectManagement.security.UserService;
+import se.BTH.ITProjectManagement.services.UserService;
 
 
 @Component
@@ -39,6 +39,10 @@ public class UserValidator implements Validator {
 
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
+        }
+
+        if (!user.getEmail().contains("@")&& !user.getEmail().contains(".")) {
+            errors.rejectValue("email", "Email.unvalidate.form");
         }
     }
 }

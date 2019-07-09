@@ -22,7 +22,6 @@ public class User  {
     @Id
     private String id;
     private String name;
-    @NotBlank
     @Email
     private String email;
     private String phone;

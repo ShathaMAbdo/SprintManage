@@ -24,9 +24,9 @@
 	            <label for="user_name">Enter Name: </label>
 	            <form:input id="user_name" cssClass="form-control" path="name" />
 	            <label for="user_name">Enter Email: </label>
-	            <form:input id="user_name" cssClass="form-control" path="email" />
+	            <form:input id="user_name" cssClass="form-control" type="Emsil" path="email" />
 	            <label for="user_name">Enter Phone: </label>
-                <form:input id="user_name" cssClass="form-control" path="phone" />
+                <form:input id="user_name" cssClass="form-control" type="number" path="phone" />
                 <label for="user_name">Enter City: </label>
                 <form:input id="user_name" cssClass="form-control" path="city" />
 

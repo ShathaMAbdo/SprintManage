@@ -6,49 +6,33 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Remain ToDo charts</title>
+<title>Performance</title>
 <script type="text/javascript">
 window.onload = function() {
 
-var dps = [[], []];
+var dps = [[]];
 var chart = new CanvasJS.Chart("chartContainer", {
-	exportEnabled: true,
 	animationEnabled: true,
+	theme: "light2", // "light1", "dark1", "dark2"
 	title: {
-		text: "The work actually remaining & planned daily"
+		text: "Developers Performance "
 	},
+			dataPointWidth: 50,
+
 	subtitles: [{
-		text: "Click Legend to Hide or Unhide Data Series"
+		text: "Based on story points"
 	}],
-	axisX: {
-		title: "Dayes"
-	},
 	axisY: {
 		title: "Story Points",
-		prefix: "",
-		includeZero: false
+		includeZero: true
 	},
-	toolTip: {
-		shared: true
-	},
-	legend: {
-		cursor: "pointer",
-		verticalAlign: "top",
-		itemclick: toggleDataSeries
+	axisX: {
+		title: "Developers",
 	},
 	data: [{
-		type: "line",
-		name: "planned",
-		showInLegend: true,
+		type: "column",
 		yValueFormatString: "#,##0",
 		dataPoints: dps[0]
-	},
-	{
-		type: "line",
-		name: "actual",
-		showInLegend: true,
-		yValueFormatString: "#,##0",
-		dataPoints: dps[1]
 	}]
 });
 
@@ -57,7 +41,7 @@ var label;
 
 <c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">
 	<c:forEach items="${dataPoints}" var="dataPoint">
-		yValue = parseFloat("${dataPoint.y}");
+		yValue = parseInt("${dataPoint.y}");
 		label = "${dataPoint.label}";
 		dps[parseInt("${loop.index}")].push({
 			label : label,
@@ -68,22 +52,13 @@ var label;
 
 chart.render();
 
-function toggleDataSeries(e) {
-	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-		e.dataSeries.visible = false;
-	} else {
-		e.dataSeries.visible = true;
-	}
-	e.chart.render();
-}
-
 }
 </script>
 </head>
 <body>
 <h1 id="form_header" class="text-warning" align="center" style="font-weight:bold">Sprint: ${sprintname}  </h1>
 <h1 id="form_header" class="text-warning" align="center" style="font-weight:bold"> Team: ${teamname}  </h1>
-	<div id="chartContainer" style="height: 600px; width: 100%;"></div>
+	<div id="chartContainer" style="height: 370px; width: 100%;"></div>
 	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 <footer>
@@ -91,4 +66,5 @@ function toggleDataSeries(e) {
 <script> document.write(new Date().toLocaleDateString()); </script>
 </p>
 </footer>
+
 </html>

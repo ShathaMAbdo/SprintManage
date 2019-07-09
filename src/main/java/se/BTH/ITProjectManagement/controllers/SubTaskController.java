@@ -15,7 +15,9 @@ import se.BTH.ITProjectManagement.validators.SubTaskValidator;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 
@@ -187,7 +189,11 @@ public class SubTaskController {
             task.getSubTasks().add(index, subtask);
         } else {
             List<Integer> actualHours = SubTask.intiActualHoursList(sprint.getPlannedPeriod());
-            SubTask subtask1 = SubTask.builder().name(subtask.getName()).actualHours(actualHours).OEstimate(subtask.getOEstimate())
+            Map<String,List<Integer>> userActualHours=new HashMap<>();
+            for (User u:subtask.getUsers()) {
+                userActualHours.put(u.getUsername(),actualHours);
+            }
+            SubTask subtask1 = SubTask.builder().name(subtask.getName()).userActualHours(userActualHours).OEstimate(subtask.getOEstimate())
                     .status(TaskStatus.PLANNED).users(subtask.getUsers()).build();
             repository.save(subtask1);
             task.getSubTasks().add(subtask1);

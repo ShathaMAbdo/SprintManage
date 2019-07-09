@@ -3,7 +3,6 @@ package se.BTH.ITProjectManagement.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,12 +13,13 @@ import se.BTH.ITProjectManagement.models.User;
 import se.BTH.ITProjectManagement.repositories.RoleRepository;
 import se.BTH.ITProjectManagement.repositories.UserRepository;
 import se.BTH.ITProjectManagement.security.SecurityService;
-import se.BTH.ITProjectManagement.security.UserService;
+import se.BTH.ITProjectManagement.services.UserService;
 import se.BTH.ITProjectManagement.validators.UserValidator;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -30,8 +30,7 @@ public class UserController {
 
     @Autowired
     private UserRepository repository;
-//    @Autowired
-//    private TeamRepository teamRepository;
+
     @Autowired
     private SecurityService securityService;
     @Autowired
@@ -44,11 +43,16 @@ public class UserController {
     // Displaying the initial users list.
 
     @RequestMapping(value = "/api/user/users", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ADMIN')")
-    public String getUsers(Model model, Principal principal) {
-        log.debug("Request to fetch all users from the mongo database"+principal.getName());
-        //if(principal.getName())
-        List<User> user_list = repository.findAll();
+  //  @PreAuthorize("hasRole('ADMIN')")
+    public String getUsers(Model model, Principal user) {
+        log.debug("Request to fetch all users from the mongo database" + user.getName());
+        Boolean isAdmin=userService.isAdmin(user.getName());
+        List<User> user_list =new ArrayList<>();
+       if(isAdmin)
+         user_list = repository.findAll();
+       else
+           user_list.add(repository.findByUsername(user.getName()));
+        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("users", user_list);
         return "user";
     }
@@ -83,6 +87,12 @@ public class UserController {
     // Deleting the specified user.
     @RequestMapping(value = "/api/user/delete", method = RequestMethod.GET)
     public String delete(@RequestParam(value="id", required=true) String id, Model model) {
+        repository.deleteById(id);
+        return "redirect:users";
+    }
+    // unactivate the specified user.
+    @RequestMapping(value = "/api/user/enable", method = RequestMethod.GET)
+    public String enable(@RequestParam(value="id", required=true) String id, Model model) {
         User user=repository.findById(id).get();
         user.changeActive();
         repository.save(user);
@@ -92,9 +102,12 @@ public class UserController {
     public String admin(@RequestParam(value="id", required=true) String id, Model model) {
         User user=repository.findById(id).get();
         List<Role> roles= user.getRoles();
-        roles.add(rolerepo.findByName(RoleName.ROLE_ADMIN));
+        Role admin=rolerepo.findByName(RoleName.ROLE_ADMIN);
+        Role oldAdmin=roles.stream().filter(r ->r.getName().equals(RoleName.ROLE_ADMIN)).findAny().orElse(null);
+        if(oldAdmin==null){
+        roles.add(admin);
         user.setRoles(roles);
-        repository.save(user);
+        repository.save(user);}
         return "redirect:users";
     }
     // Adding a new user or updating an existing user.
@@ -114,7 +127,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult,Model model) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -125,7 +138,8 @@ public class UserController {
         userService.save(User.builder().name(userForm.getName()).active(true).password(userForm.getPassword())
                 .username(userForm.getUsername()).city(userForm.getCity()).phone(userForm.getPhone()).build());
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-
+        Boolean isAdmin=userService.isAdmin(userForm.getUsername());
+        model.addAttribute("isAdmin", isAdmin);
         return "hello";
     }
 
@@ -140,8 +154,10 @@ public class UserController {
         return "/login";
     }
     @GetMapping(value={"/","/api/", "/api/hello"})
-    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="Administrator") String name) {
+    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="Administrator") String name,Principal user) {
         model.addAttribute("name", name);
+        Boolean isAdmin=userService.isAdmin(user.getName());
+        model.addAttribute("isAdmin", isAdmin);
         return "hello";
     }
 }

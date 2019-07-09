@@ -13,9 +13,13 @@
                             <ul class="nav navbar-nav">
                                 <li><a class="navbar-brand" href="/" th:href="@{/}">Home</a></li>
                                 <li><a href="/api/team/teams" style="color:red;"th:href="@{/api/team/teams}">TEAMS</a></li>
-                                <li><a href="/api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
+                                <c:if test="${isAdmin == true}">
+                                    <li><a href="/api/team/add" style="color:red;"th:href="@{/api/team/add}">Create Team</a></li>
+                                </c:if>
                                  <li><a href="/api/sprint/sprints"style="color:red;" th:href="@{/api/sprint/sprints}">SPRINT</a></li>
-                                 <li><a href="/api/sprint/add" style="color:red;"th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                                 <c:if test="${isAdmin == true}">
+                                    <li><a href="/api/sprint/add" style="color:red;"th:href="@{/api/sprint/add}">Create Sprint</a></li>
+                                 </c:if>
                             </ul>
 
                         </div>
@@ -41,23 +45,30 @@
 	            	</tr>
 	        	</thead>
 	        	<tbody>
-	            	<c:forEach items="${users}" var="user">
+	            	<c:forEach items="${users}"  varStatus="u" var="user">
 	                	<tr align="left">
-	                    	<td><c:out value="${user.id}" /></td>
+	                    	<td><c:out value="${u.index+1}" /></td>
 	                    	<td><c:out value="${user.name}" /></td>
 	                    	<td><c:out value="${user.email}" /></td>
 	                    	<td><c:out value="${user.phone}" /></td>
                             <td><c:out value="${user.city}" /></td>
                             <td><c:out value="${user.active}" /></td>
-	                     <!-- 	<td>
-	                      	<c:url var="editUrl" value="/api/user/edit?id=${user.id}" /><a id="update" href="${editUrl}" class="btn btn-warning">Update</a>
-	                    	</td> -->
-	                    	<td>
-	                        	<c:url var="deleteUrl" value="/api/user/delete?id=${user.id}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Dis/Enabled</a>
-	                    	</td>
-	                    	<td>
+                            <c:if test="${isAdmin == true}">
+                         	<td>
                             	<c:url var="adminUrl" value="/api/user/admin?id=${user.id}" /><a id="admin" href="${adminUrl}" class="btn btn-info">make admin</a>
                             </td>
+	                    	<td>
+	                        	<c:url var="activeUrl" value="/api/user/enable?id=${user.id}" /><a id="active" href="${activeUrl}" class="btn btn-warning">Dis/Enabled</a>
+	                    	</td>
+	                        <td>
+                        	    <c:url var="deleteUrl" value="/api/user/delete?id=${user.id}" /><a id="delete" href="${deleteUrl}" class="btn btn-danger">Delete</a>
+                        	</td>
+                        	</c:if>
+                             <c:forEach items="${user.roles}" varStatus="r" var="role">
+                             <tr>
+                            <td>Role ${r.index+1} : <c:out value="${role.name}" /></td>
+                            </tr>
+                            </c:forEach>
 	                	</tr>
 	            	</c:forEach>
 	        	</tbody>

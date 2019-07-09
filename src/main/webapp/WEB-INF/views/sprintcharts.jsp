@@ -45,6 +45,7 @@
                  <h1><font color="red">Sprint charts</h1>
                  <a style="color:black;" href="/api/sprint/canvasjschart?sprintid=${sprintid}" color="red" target="_blank"><h4> Planned/Actual Todo Chart</h3></a>
                  <a style="color:black;" href="/api/sprint/canvasjschart1?sprintid=${sprintid}" color="red" target="_blank"><h4> Planned/Actual Remaining Chart</h3></a>
+                 <a style="color:black;" href="/api/sprint/canvasjschart2?sprintid=${sprintid}" color="red" target="_blank"><h4> Developers Performance </h3></a>
 
             </div>
             <div class="row text-center">

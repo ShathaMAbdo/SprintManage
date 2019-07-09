@@ -87,4 +87,9 @@ function toggleDataSeries(e) {
 	<div id="chartContainer" style="height: 600px; width: 100%;"></div>
 	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
+<footer>
+<p>
+<script> document.write(new Date().toLocaleDateString()); </script>
+</p>
+</footer>
 </html>

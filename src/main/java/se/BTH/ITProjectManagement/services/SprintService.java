@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.BTH.ITProjectManagement.models.Sprint;
 
+import se.BTH.ITProjectManagement.models.User;
 import se.BTH.ITProjectManagement.repositories.SprintRepository;
 
 import java.util.ArrayList;
@@ -71,6 +72,22 @@ public class SprintService {
         }
         list.add(dataPoints1);
         list.add(dataPoints2);
+        return list;
+    }
+    public List<List<Map<Object, Object>>> getCanvasjsDataList2(String sprintid) {
+        Sprint sprint = repository.findById(sprintid).get();
+        Map<Object, Object> map = null;
+        List<List<Map<Object,Object>>> list = new ArrayList<List<Map<Object,Object>>>();
+        List<Map<Object,Object>> dataPoints1 = new ArrayList<Map<Object,Object>>();
+
+        for (User user:sprint.getTeam().getUsers()) {
+            map = new HashMap<Object, Object>();
+            map.put("label", user.getUsername());
+            map.put("y", sprint.totalActualHoursPerUser().get(user.getUsername()).stream().mapToInt(i -> i.intValue()).sum());
+            dataPoints1.add(map);
+        }
+        list.add(dataPoints1);
+
         return list;
     }
 

@@ -19,7 +19,7 @@
                                     <li><a href="/api/user/users"style="color:red;" th:href="@{/api/user/users}">USERS</a></li>
                                     <li><a href="/api/team/teams" style="color:red;"th:href="@{/api/team/teams}">Teams</a></li>
                                     <li><a href="/api/sprint/sprints"style="color:red;" th:href="@{api/sprint/sprints}">SPRINTS</a></li>
-                                    <li><a href="/api/sprint/add"style="color:red;" th:href="@{/api/sprint/add}">Create Sprint</a></li>
+
                                 </ul>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                            <tbody>
                             	<c:forEach items="${subtaskAttr.users}" varStatus="st" var="user"   >
                             	    <tr align="left">
-                            	      <td><form:input path="users[${st.index}].name" cssClass="form-control"   value="${user.name}"/></td>
+                            	      <td><form:input path="users[${st.index}].name" cssClass="form-control"   value="${user.name}" style="border:none;"/></td>
                             	      <td><form:input type="hidden" path="users[${st.index}].email"            value="${user.email}"/></td>
                                       <td><form:input type="hidden" path="users[${st.index}].phone"            value="${user.phone}"/></td>
                             	      <td><form:input type="hidden" path="users[${st.index}].city"             value="${user.city}"/></td>
@@ -82,27 +82,28 @@
                             	</c:forEach>
                            </tbody>
                       </table>
-                    <c:url var="AdduserUrl" value="/api/subtask/selectmember?id=${subtaskAttr.id}&taskid=${taskid}&sprintid=${sprintid}" /><a id="adduser" href="${AdduserUrl}" class="btn btn-success">Add member of team</a>
+                     <c:if test="${subtaskAttr.id != null}">
+                      <c:url var="AdduserUrl" value="/api/subtask/selectmember?id=${subtaskAttr.id}&taskid=${taskid}&sprintid=${sprintid}" /><a id="adduser" href="${AdduserUrl}" class="btn btn-success">Add member of team</a>
+                     </c:if>
                  <div>&nbsp;</div>
                  <label for="subtask_name">Actual Hours: </label>
                       <table id="actualHours_table" class="table">
                             <tbody>
-                               <c:forEach items="${subtaskAttr.actualHours}" varStatus="st" var="actualHour"   >
-                                <td style="width: 50px;"> Day ${st.index+1}</td>
+                               <c:forEach items="${subtaskAttr.userActualHours}" varStatus="ust" var="useractualHour"   >
+                               <tr><td>${useractualHour.key}</td> </tr>
+                               <tr>
+                                 <c:forEach items="${useractualHour.value}" varStatus="st" var="actualHour"   >
+                                   <td style="width: 50px;"> Day ${st.index+1}</td>
+                                  </c:forEach>
+                                </tr>
+                                <tr> <c:forEach items="${useractualHour.value}" varStatus="st" var="actualHour"   >
+                                 <td><form:input style="width: 30px;" type="number" min="0" path="userActualHours[${useractualHour.key}][${st.index}]" value="${actualHour}" /> </td>
+                                  </c:forEach>
+                                </tr>
                                </c:forEach>
                             </tbody>
                       </table>
-                      <table id="actualHours_table1" class="table">
-                            <tbody>
-                               <c:forEach items="${subtaskAttr.actualHours}" varStatus="st" var="actualHour"   >
-                               <td><form:input style="width: 30px;"
-                               type="number" min="0"
-                               path="actualHours[${st.index}]"
-                               value="${actualHour}" />
-                               </td>
-                               </c:forEach>
-                            </tbody>
-                      </table>
+
 	            <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
                 <c:url var="CancelUrl" value="/api/task/edit?taskid=${taskid}&sprintid=${sprintid}" /><a id="cancel" href="${CancelUrl}" class="btn btn-danger">Cancel</a>
 

@@ -14,8 +14,11 @@ import se.BTH.ITProjectManagement.models.*;
 import se.BTH.ITProjectManagement.repositories.SprintRepository;
 import se.BTH.ITProjectManagement.repositories.TeamRepository;
 import se.BTH.ITProjectManagement.services.SprintService;
+import se.BTH.ITProjectManagement.services.UserService;
 
+import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/sprint")
@@ -29,15 +32,24 @@ public class SprintController {
 
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private UserService userService;
 
     public SprintController(SprintRepository repository) {
         this.repository = repository;
     }
 
     @RequestMapping(value = "/sprints", method = RequestMethod.GET)
-    public String getsprints(Model model) {
+    public String getsprints(Model model, Principal user) {
         log.info("Request to fetch all sprints from the mongo database");
-        List<Sprint> sprint_list = repository.findAll();
+        Boolean isAdmin = userService.isAdmin(user.getName());
+
+        List<Sprint> sprint_list;
+        if (isAdmin)
+            sprint_list = repository.findAll();
+        else
+            sprint_list = repository.findAll().stream().filter(s -> s.isUserInSprint(user)).collect(Collectors.toList());
+        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("sprints", sprint_list);
         return "sprint";
     }
@@ -54,9 +66,11 @@ public class SprintController {
 
     // Opening the edit sprint form page.
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String editSprint(@RequestParam(value = "sprintid", required = true) String id, Model model) {
+    public String editSprint(@RequestParam(value = "sprintid", required = true) String id, Model model,Principal user) {
         log.info("Request to open the edit Sprint form page");
+        Boolean isAdmin=userService.isAdmin(user.getName());
         model.addAttribute("sprintAttr", repository.findById(id).get());
+        model.addAttribute("isAdmin", isAdmin);
         return "sprintform";
     }
 
@@ -114,7 +128,9 @@ public class SprintController {
     @RequestMapping(value = "/teams", method = RequestMethod.GET)
     public String viewTeamsToSelect(@RequestParam(value = "id", required = true) String id, Model model) {
         log.info("Request to fetch all teams from the db for custom team and select team");
-        model.addAttribute("teams", teamRepository.findAll());
+        List<Team> teams = teamRepository.findAll();
+        teams.removeIf(team -> !team.isActive());
+        model.addAttribute("teams", teams);
         model.addAttribute("sprintid", id);
         return "sprintteam";
     }
@@ -150,5 +166,13 @@ public class SprintController {
         modelMap.addAttribute("sprintname", repository.findById(sprintid).get().getName());
         modelMap.addAttribute("teamname", repository.findById(sprintid).get().getTeam().getName());
         return "actualremaindaily";
+    }
+    @RequestMapping(value = "/canvasjschart2", method = RequestMethod.GET)
+    public String canvasjschart2(@RequestParam(value = "sprintid", required = true) String sprintid, ModelMap modelMap) {
+        List<List<Map<Object, Object>>> canvasjsDataList = sprintService.getCanvasjsDataList2(sprintid);
+        modelMap.addAttribute("dataPointsList", canvasjsDataList);
+        modelMap.addAttribute("sprintname", repository.findById(sprintid).get().getName());
+        modelMap.addAttribute("teamname", repository.findById(sprintid).get().getTeam().getName());
+        return "developerPerformance";
     }
 }
